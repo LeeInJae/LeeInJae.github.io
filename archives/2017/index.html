@@ -176,12 +176,13 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/15/EMC_25/">사용하라</a>
+        <a href="/2017/10/15/EMC_25/">EMC_Chatper25</a>
         </h1>
     
 
         <p class="article-excerpt">
-            항목 25: 오른값 참조에는 std::move를, 보편 참조에는 std::forward를 사용하라.
+            항목 25: 오른값 참조에는 std::move를, 보편 참조에는 std::forward를 사용하라.오른값 참조는 이동할 수 있는 객체에만 묶이고, 어떤 매개변수가 오른값 참조라면, 그 참조에 묶인 객체를 이동할 수 있음이 확실하다.
+1234class Widget &#123;	Widget(Widget&amp;&amp; rhs); //rhs 는 이동이 가능한 
         </p>
     </div>
 </article>
@@ -420,7 +421,7 @@ Quick
                         
                         <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/10/15/EMC_25/" class="title">사용하라</a></p>
+                            <p class="item-title"><a href="/2017/10/15/EMC_25/" class="title">EMC_Chatper25</a></p>
                             <p class="item-date"><time datetime="2017-10-15T06:55:59.000Z" itemprop="datePublished">2017-10-15</time></p>
                         </div>
                     </li>
