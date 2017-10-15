@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Chapter26. 보편 참조에 대한 중복적재를 피하라. | 프로그래밍 안녕</title>
+    <title>EMC_Chapter26 | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -12,13 +12,13 @@
     <meta name="description" content="26. 보편참조에 대한 중복적재를 피하라사람 이름 하나를 매개변수로 받고, 현재 날짜와 시간을 기록 후 전역 자료구조에 추가하는 함수.1234567891011std::multiset&amp;lt;std::string&amp;gt; names; //전역 자료구조void logAndAdd(const std::string&amp;amp; name)&amp;#123;    auto now =">
 <meta name="keywords" content="c++,EMC,std::move,std::forward">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Chapter26. 보편 참조에 대한 중복적재를 피하라.">
+<meta property="og:title" content="EMC_Chapter26">
 <meta property="og:url" content="https://LeeInJae.github.io/2017/10/15/EMC-26/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
 <meta property="og:description" content="26. 보편참조에 대한 중복적재를 피하라사람 이름 하나를 매개변수로 받고, 현재 날짜와 시간을 기록 후 전역 자료구조에 추가하는 함수.1234567891011std::multiset&amp;lt;std::string&amp;gt; names; //전역 자료구조void logAndAdd(const std::string&amp;amp; name)&amp;#123;    auto now =">
-<meta property="og:updated_time" content="2017-10-15T10:00:58.859Z">
+<meta property="og:updated_time" content="2017-10-15T10:11:08.444Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter26. 보편 참조에 대한 중복적재를 피하라.">
+<meta name="twitter:title" content="EMC_Chapter26">
 <meta name="twitter:description" content="26. 보편참조에 대한 중복적재를 피하라사람 이름 하나를 매개변수로 받고, 현재 날짜와 시간을 기록 후 전역 자료구조에 추가하는 함수.1234567891011std::multiset&amp;lt;std::string&amp;gt; names; //전역 자료구조void logAndAdd(const std::string&amp;amp; name)&amp;#123;    auto now =">
     
 
@@ -84,7 +84,7 @@
                             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Cercar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -105,8 +105,8 @@
         TRANSLATION: {
             POSTS: 'Posts',
             PAGES: 'Pages',
-            CATEGORIES: 'categories',
-            TAGS: 'etiquetes',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -144,7 +144,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-        Chapter26. 보편 참조에 대한 중복적재를 피하라.
+        EMC_Chapter26
         </h1>
     
 
@@ -170,15 +170,19 @@
         
         <div class="article-entry" itemprop="articleBody">
             <h3 id="26-보편참조에-대한-중복적재를-피하라"><a href="#26-보편참조에-대한-중복적재를-피하라" class="headerlink" title="26. 보편참조에 대한 중복적재를 피하라"></a>26. 보편참조에 대한 중복적재를 피하라</h3><p>사람 이름 하나를 매개변수로 받고, 현재 날짜와 시간을 기록 후 전역 자료구조에 추가하는 함수.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">multiset</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; names; <span class="comment">//전역 자료구조</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> now = </div><div class="line">        <span class="built_in">std</span>::chrono::system_clock::now();</div><div class="line"></div><div class="line">    <span class="built_in">log</span>(now, <span class="string">"logAndAdd"</span>);</div><div class="line"></div><div class="line">    names.emplace(name); <span class="comment">//이름을 전역 자료구조에 추가;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>이 코드는 기능상에는 문제가 없지만 효율성ㅇ[ㅔ서 문제가 있다.<br>다음과 같이 호출 형태에 따라서 살펴보자.</p>
+<p>이 코드는 기능상에는 문제가 없지만 효율성에서 문제가 있다.<br>다음과 같이 호출 형태에 따라서 살펴보자.</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">petName</span><span class="params">(<span class="string">"Darla"</span>)</span></span>;</div><div class="line"></div><div class="line"><span class="comment">//왼값 std::string 넘기는 경우</span></div><div class="line">logAndAdd(petName); </div><div class="line"></div><div class="line"><span class="comment">//오른값 std::string 넘기는 경우</span></div><div class="line">logAndAdd(<span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"Persephone"</span>));</div><div class="line"></div><div class="line"><span class="comment">//문자열 리터럴을 넘기는 경우</span></div><div class="line">logAndAdd(<span class="string">"Patty Dog"</span>);</div></pre></td></tr></table></figure>
-<p>첫 호출에서 매개변수 name은 변수 petName에 묶인다. 그리고 njames.emplace로 전달 된다. name은 왼값이므로 emplace는 그것을 ㅗnames에 복사한다.<br>logAndAdd에 전달된 값이 왼값이므로 복사는 불가피하다.<br>둘째 호출에서는 매개변수 nabme이 오른값에 묶인다. name자체는 왼값이므로 names에 복사된다. 그러나 원칙상 name을 names로 이동하는 것이 가능하다. 즉 복사1회 비용을 이동 작업으로 대체가능하다.<br>셋째 호출에서는 매개변수 name은 오른값에 묶이지만 암묵적으로 “Patty Dog”에 대한 stjd::string 객체가 생성되고, name은 names에 복사된다. 만약 문자열 리터럴을 emplace에 직접 전달했따면 직접 std::multiset안에서 std::string 객체를 생성할수 있는데도 말이다. 즉 std::string 임시 객쳎도 필요없고 복사와 이동도 필요없는 경우이다.<br>이를 해결하기 위해서 logAndAdd가 보편 참조를 받게하면 std::forward를 이용해서 emplace에 전달시킬 수 있고, 둘째, 셋째 호출의 비효율서ㅗㅇ을 제거할 수 있다.</p>
+<p>첫 호출에서 매개변수 name은 변수 petName에 묶인다. 그리고 names.emplace로 전달 된다. name은 왼값이므로 emplace는 그것을 names에 복사한다.<br>logAndAdd에 전달된 값이 왼값이므로 복사는 불가피하다.<br>둘째 호출에서는 매개변수 nabme이 오른값에 묶인다. name자체는 왼값이므로 names에 복사된다. 그러나 원칙상 name을 names로 이동하는 것이 가능하다. 즉 복사1회 비용을 이동 작업으로 대체가능하다.<br>셋째 호출에서는 매개변수 name은 오른값에 묶이지만 암묵적으로 “Patty Dog”에 대한 stjd::string 객체가 생성되고, name은 names에 복사된다. 만약 문자열 리터럴을 emplace에 직접 전달했다면 직접 std::multiset안에서 std::string 객체를 생성할수 있는데도 말이다. 즉 std::string 임시 객체도 필요없고 복사와 이동도 필요없는 경우이다.<br>이를 해결하기 위해서 logAndAdd가 보편 참조를 받게하면 std::forward를 이용해서 emplace에 전달시킬 수 있고, 둘째, 셋째 호출의 비효율성을 제거할 수 있다.</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAnddAdd</span><span class="params">(T&amp;&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> now = <span class="built_in">std</span>::chrono::system_clock::now();</div><div class="line">    <span class="built_in">log</span>(now, <span class="string">"logAndAdd"</span>);</div><div class="line">    names.emplace(<span class="built_in">std</span>::forward&lt;T&gt;(name));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">petName</span><span class="params">(<span class="string">"Darla"</span>)</span></span>;</div><div class="line"></div><div class="line"><span class="comment">//multiset으로 복사</span></div><div class="line">logAnddAdd(petName);</div><div class="line"></div><div class="line"><span class="comment">//오른값 이동.</span></div><div class="line">logAndAdd(<span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"Persephone"</span>));</div><div class="line"></div><div class="line"><span class="comment">//multiset안에서 std::string을 생성.</span></div><div class="line">logAndAdd(<span class="string">"Patty Dog"</span>);</div></pre></td></tr></table></figure>
 <p>그런데 만약 이름이 아니라 index를 통하여 이름을 전역 자료구조에 저장해야되는 경우도 생겼다고해보자.<br>이를 overloading을 통해서 구현한 예이다.</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//idx에 해당하는 이름을 돌려준다.</span></div><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">nameFromIdx</span><span class="params">(<span class="keyword">int</span> idx)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(<span class="keyword">int</span> idx)</span> <span class="comment">//오버로딩</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> now = <span class="built_in">std</span>::chrono::system_click::now();</div><div class="line">    <span class="built_in">log</span>(now, <span class="string">"logAndAdd"</span>);</div><div class="line">    names.emplace(nameFromIdx(idx));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">petName</span><span class="params">(<span class="string">"Darla"</span>)</span></span>; <span class="comment">//이전과 동일</span></div><div class="line"></div><div class="line"><span class="comment">//모두 T&amp;&amp;를 받는 오버로딩 함수 호출</span></div><div class="line">logAndAdd(petName);</div><div class="line">logAndAdd(<span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"Persephone"</span>));</div><div class="line">logAndAdd(<span class="string">"Patty Dog"</span>);</div><div class="line"></div><div class="line"><span class="comment">//int버전에 대한 오버로딩 함수 호출</span></div><div class="line">logAndAdd(<span class="number">22</span>);</div></pre></td></tr></table></figure>
 <p>위의 예에서는 기대한 대로 호출을 한다. 하지만 다음의 경우는 어떻게 될까?</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">short</span> nameIdx;</div><div class="line">...</div><div class="line">logAndAdd(name[idx]); <span class="comment">//오류</span></div></pre></td></tr></table></figure>
-<p>다음의 2가지 경우로 나뉘게 될 것이다.<br>short&amp; 로 연역이 되어, T&amp;&amp; 의 오버로딩 함수로 호출을 한다.<br>short를 int로 승격시켜 int 타입의 오버로딩 함수를 호출한다.<br>그런데 이때 T&amp;&amp; 형태의 오버로딩 함수는 short를 int로 승격시키는 과정이 필요없이 호출 인자에 부합하므로 보편 참조 오버로딩 함수가 호출된다. 그렇게되면 매개변수 name은 short형태에 묶이게 되고,<br>name 이 std::forward를 통해서 names의 멤버함수 emplace에 전달된다. 그ㅗ런데 std::string의 생성자 중에 short를 받는 버전은 없으므로 이는 실패하게된다.<br>따라서 보편참조와 오버로딩을 결합하는 것은 거의 항상 나쁘다.</p>
+<p>다음의 2가지 경우로 나뉘게 될 것이다.</p>
+<ul>
+<li>short&amp; 로 연역이 되어, T&amp;&amp; 의 오버로딩 함수로 호출을 한다.</li>
+<li>short를 int로 승격시켜 int 타입의 오버로딩 함수를 호출한다.<br>그런데 이때 T&amp;&amp; 형태의 오버로딩 함수는 short를 int로 승격시키는 과정이 필요없이 호출 인자에 부합하므로 보편 참조 오버로딩 함수가 호출된다. 그렇게되면 매개변수 name은 short형태에 묶이게 되고,<br>name 이 std::forward를 통해서 names의 멤버함수 emplace에 전달된다. 그런데 std::string의 생성자 중에 short를 받는 버전은 없으므로 이는 실패하게된다.<br>따라서 보편참조와 오버로딩을 결합하는 것은 거의 항상 나쁘다.</li>
+</ul>
 <p>그런데 만약에 생성자에서 이러한 보편참조를 사용해야될 경우는 어떻게 해야할까? 생성자는 특성상 메서드 이름을 달리할 수 없으므로 필연적으로 오버로딩이 생길수밖에 없다.<br>다음의 예를 살펴보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Person</span><span class="params">(T&amp;&amp; n)</span> <span class="comment">//완벽 전달 생성자</span></span></div><div class="line">    : name(std::forward&lt;T&gt;(n)) &#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> idx)</span> <span class="comment">//int를 받는 생성자.</span></span></div><div class="line">    : name(nameFromIdx(idx)) &#123; &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <p>앞선 경우와 마찬가지로 int 이외의 정수형식을 넘겨주면 int를 받는 생성자 대신 보편 참조를 받는 생성자가 호출되므로 컴파일이 실패한다.<br>그런데 앞선 경우보다 더 심각한 문제가 있는데 이는 컴파일러가 자동으로 만들어 내는 복사 생성자와 이동 생성자 때문이다.<br>그래서 이 클래스는 실제로는 이렇게 된다.</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Person</span><span class="params">(T&amp;&amp; n)</span></span></div><div class="line">    : name(std::forward&lt;T&gt;(n)) &#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> idx)</span></span></div><div class="line">    : name(nameFromIdx(idx)) &#123; &#125;</div><div class="line"></div><div class="line">    <span class="comment">//복사 생성자와 이동생성자를 컴파일러가 만들어버림</span></div><div class="line">    Person(<span class="keyword">const</span> Person&amp; rhs);</div><div class="line">    Person(Person&amp;&amp; rhs);</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
@@ -189,6 +193,10 @@
 <p>위와 같은 문제는 상속에서도 똑같이 발생한다.</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialPerson</span> :</span> <span class="keyword">public</span> Person</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    SpecialPerson(<span class="keyword">const</span> SpecialPerson&amp; rhs)</div><div class="line">    : Person(rhs) &#123; ... &#125;</div><div class="line"></div><div class="line">    SpecialPerson(SpecialPerson&amp;&amp; rhs)</div><div class="line">    : Person(<span class="built_in">std</span>::move(rhs)) &#123; ... &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>위와 같이 복사 및 이동 생성자에서 부모의 복사 및 이동생성자를 호춭하여 값을 세팅하려고 하는 경우를 살펴보자.<br>위와같이 Person(rhs), Person(std::move(rhs))에서 Person의 복사 및 이동생성자를 호출하지 않고 보편 참조 생성자를 호출하기 때문에 문제가 발생할 것이다.<br>(부모클래스의 보편참조 생성자에서 const SpecialPerson&amp; 또는 SpecialPerson&amp;&amp;로 연역을 바로 할 수 있기 때문이다)</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>보편 참조에 대한 중복적재는 거의 항상 보편 참조 중복적재 버전이 예상보다 자주 호출됨(의도하지 않게)</li>
+<li>완벽 전달 생성자들은 특히 주의해야함. 비 const왼값보다 더 정합성에 부합하여 클래스의 복사 및 이동 생성자들에 대한 파생 클래스의 호출들을 가로챌 수 있음</li>
+</ul>
 
         </div>
         <footer class="article-footer">
@@ -196,7 +204,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/10/15/EMC-26/" data-id="cj8sl32gr00013svi0hv69669" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/10/15/EMC-26/" data-id="cj8sl32gr00013svi0hv69669" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -276,7 +284,7 @@
                     <aside id="sidebar">
     <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
     <div class="sidebar-top">
-        <p>seguir:</p>
+        <p>follow:</p>
         <ul class="social-links">
             
                 
@@ -335,7 +343,7 @@
     
     
         <a href="/2017/10/15/EMC_25/" id="article-nav-older" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">antic</strong>
+        <strong class="article-nav-caption">older</strong>
         <p class="article-nav-title">EMC_Chatper25</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
@@ -356,7 +364,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
-                            <p class="item-title"><a href="/2017/10/15/EMC-26/" class="title">Chapter26. 보편 참조에 대한 중복적재를 피하라.</a></p>
+                            <p class="item-title"><a href="/2017/10/15/EMC-26/" class="title">EMC_Chapter26</a></p>
                             <p class="item-date"><time datetime="2017-10-15T09:21:52.000Z" itemprop="datePublished">2017-10-15</time></p>
                         </div>
                     </li>
@@ -414,7 +422,7 @@
             
                 
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">arxius</h3>
+        <h3 class="widget-title">archives</h3>
         <div class="widget">
             <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">5</span></li></ul>
         </div>
@@ -424,7 +432,7 @@
             
                 
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">etiquetes</h3>
+        <h3 class="widget-title">tags</h3>
         <div class="widget">
             <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">2</span></li></ul>
         </div>
@@ -434,7 +442,7 @@
             
                 
     <div class="widget-wrap widget-float">
-        <h3 class="widget-title">etiqueta cloud</h3>
+        <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
             <a href="/tags/EMC/" style="font-size: 10px;">EMC</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/std-forward/" style="font-size: 10px;">std::forward</a> <a href="/tags/std-move/" style="font-size: 10px;">std::move</a>
         </div>
