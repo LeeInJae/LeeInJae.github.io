@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>chapter27. 보편 참조에 대한 중복적재 대신 사용할 수 있는 기법들 | 프로그래밍 안녕</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="중복적재를 포기한다.웬만하면 중복적재를 하지 않음으로써 아예 미연에 방지하는 것이다.예를들면 logAndAdd 두 중복적재를 logAndAddName과 logAndAddNameIdx로 나누면 될 것이다.하지만 이 방법은 생성자에서는 어떻게 할 수가 없는 방법이다.생성자는 특성상 이름이 같기 때문이다. const T&amp;amp; 매개변수를 사용한다.보편 참조 매">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter27. 보편 참조에 대한 중복적재 대신 사용할 수 있는 기법들">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/10/17/emc-27/index.html">
+<meta property="og:site_name" content="프로그래밍 안녕">
+<meta property="og:description" content="중복적재를 포기한다.웬만하면 중복적재를 하지 않음으로써 아예 미연에 방지하는 것이다.예를들면 logAndAdd 두 중복적재를 logAndAddName과 logAndAddNameIdx로 나누면 될 것이다.하지만 이 방법은 생성자에서는 어떻게 할 수가 없는 방법이다.생성자는 특성상 이름이 같기 때문이다. const T&amp;amp; 매개변수를 사용한다.보편 참조 매">
+<meta property="og:updated_time" content="2017-10-16T16:22:46.632Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter27. 보편 참조에 대한 중복적재 대신 사용할 수 있는 기법들">
+<meta name="twitter:description" content="중복적재를 포기한다.웬만하면 중복적재를 하지 않음으로써 아예 미연에 방지하는 것이다.예를들면 logAndAdd 두 중복적재를 logAndAddName과 logAndAddNameIdx로 나누면 될 것이다.하지만 이 방법은 생성자에서는 어떻게 할 수가 없는 방법이다.생성자는 특성상 이름이 같기 때문이다. const T&amp;amp; 매개변수를 사용한다.보편 참조 매">
+    
+
+    
+        <link rel="alternate" href="/" title="프로그래밍 안녕" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">열심히하자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/source/index.html">about</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    uncategorized
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-emc-27" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        chapter27. 보편 참조에 대한 중복적재 대신 사용할 수 있는 기법들
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2017/10/17/emc-27/" class="article-date">
+            <time datetime="2017-10-16T15:00:37.000Z" itemprop="datePublished">2017-10-17</time>
+        </a>
+    </div>
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="중복적재를-포기한다"><a href="#중복적재를-포기한다" class="headerlink" title="중복적재를 포기한다."></a>중복적재를 포기한다.</h3><p>웬만하면 중복적재를 하지 않음으로써 아예 미연에 방지하는 것이다.<br>예를들면 logAndAdd 두 중복적재를 logAndAddName과 logAndAddNameIdx로 나누면 될 것이다.<br>하지만 이 방법은 생성자에서는 어떻게 할 수가 없는 방법이다.<br>생성자는 특성상 이름이 같기 때문이다.</p>
+<h3 id="const-T-amp-매개변수를-사용한다"><a href="#const-T-amp-매개변수를-사용한다" class="headerlink" title="const T&amp; 매개변수를 사용한다."></a>const T&amp; 매개변수를 사용한다.</h3><p>보편 참조 매개변수 대신 const에 대한 왼값 참조 매개변수를 사용하는 방법이 될 수 있다.<br>이는 C++98로 회귀하는 것이다. 하지만 때에따라서는 이것도 하나의 해결책이 될 수 있다.<br>즉, 다음과 같은 형태로 쓰는 것이다. 하지만 EMC26에서 살펴보았뜻이 성능적인 면에서 손해를 볼 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(constt <span class="built_in">std</span>::<span class="built_in">string</span>&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    ...</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="값-전달-방식의-매개변수를-사용한다"><a href="#값-전달-방식의-매개변수를-사용한다" class="headerlink" title="값 전달 방식의 매개변수를 사용한다."></a>값 전달 방식의 매개변수를 사용한다.</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Person</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> n)</span></span></div><div class="line">    : name(std::move(n)) &#123; &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> idx)</span></span></div><div class="line">    : name(nameFromIdx(idx)) &#123; &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>다음과 같다면 정수형 타입은 정수형타입의 생성자로, std::string 타입은 std::string 타입의 생성자로 호출된다.</p>
+<h3 id="꼬리표-배분을-사용한다"><a href="#꼬리표-배분을-사용한다" class="headerlink" title="꼬리표 배분을 사용한다."></a>꼬리표 배분을 사용한다.</h3><p>const 왼값 참조 전달이나 값전달은 완벽 전달을 지원하지 않는다. 보편 참조를 사용하려는 이유가 완벽전달이라면, 보편 참조 말고는 다른 대안이 없다.<br>매개변수 목록에 보편 참조 매개변수뿐만 아니라 보편 참조가 아닌 매개변수들도 포함되어 있는 경우를 생각해보자.<br>만약 보편 참조가 아닌 매개변수로 인해 함수 호출에 부합하지 않는다면, 다른 더 적합한 보편 참조 매개 변수가 있는 중복적재 함수를 호출할 가능성이 있다.<br>이것이 꼬리표 배분이다.</p>
+<p>꼬리표 배분을 사용하기전에 문제가될 수 있는 중복적재 이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">multiset</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; names;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(T&amp;&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> now = <span class="built_in">std</span>::chrono::system_clock::now();</div><div class="line">    <span class="built_in">log</span>(now, <span class="string">"logAndAdd"</span>);</div><div class="line">    names.emplace(<span class="built_in">std</span>::forward&lt;T&gt;(name));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>꼬리표 배분을 사용하여 중복적재시 발생할 수 있는 문제를 없앴다.<br>이 코드를 정리하면 logAndAdd는 모든 타입의 호출을 받고, 실제작업은 logAndAddImpl에서 하도록 위임하는 방법이다.<br>즉 logAndAddImpl에서는 중복적재(오버로딩)를 사용하고, 둘 중 하나는 보편 참조를 받는다. 그런데 두 함수는 애초에 전달된인수가 정수 형식인지 아닌지를 뜻하는 또다른 매개변수를 받는다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(T&amp;&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    logAndAddImpl(<span class="built_in">std</span>::forward&lt;T&gt;(name),</div><div class="line">                  <span class="built_in">std</span>::is_integral&lt;T&gt;()); <span class="comment">// 아주 정확하지는 않음.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>즉, logAndAddImpl의 두번쨰 인수덕분에 앞서 발생했던 문제를 해결할 수 있따. 그런데 한가지 주의할것이 있다.<br>만일 보편 참조 name으로 전달된 인수가 왼값이면 T는 왼값 참조 형식으로 연역된다. 따라서 int 형식의 왼값이 logAndAdd에 전달되면 T는 int&amp;로 연역된다.<br>따라서 참조는 정수 형식이 아니므로 int&amp; 은정수형식이 아니게된다. std::is_integral<t>는 거짓이 되는 것이다. 따라서 이러한 문제를 방지하기 위해서 앞서 배웠던 std::remove_reference라는 형식특질을 사용한다.(모든 참조 한정사를 제거하는 것)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(T&amp;&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    logAndAddImpl(<span class="built_in">std</span>::forward&lt;T&gt;(name),</div><div class="line">                  <span class="built_in">std</span>::is_integral&lt;<span class="keyword">typename</span> <span class="built_in">std</span>::remove_reference&lt;T&gt;::type&gt;()); <span class="comment">//c++11</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">typename</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAdd</span><span class="params">(T&amp;&amp; name)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    logAndAddImpl(<span class="built_in">std</span>::forward&lt;T&gt;(name),</div><div class="line">                  <span class="built_in">std</span>::is_integral&lt; <span class="built_in">std</span>::<span class="keyword">remove_reference_t</span>&lt;T&gt; &gt;()); <span class="comment">//c++14</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></t></p>
+<p>그리고 logAndAddImpl은 이렇게구현될 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//비정수 인수를 받는 버전</span></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndImpl</span><span class="params">(T&amp;&amp; name, <span class="built_in">std</span>::false_type)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> now = <span class="built_in">std</span>::chrono::system_clock::now();</div><div class="line">    <span class="built_in">log</span>(now, <span class="string">"logAndAdd"</span>);</div><div class="line">    names.emplace(<span class="built_in">std</span>::forward&lt;T&gt;(name));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>그런데 여기서 살펴 볼 것은 두번째 인수의 형식이 int라는 것이 true냐 false냐는 판정 자체가 런타임에 일어난다. 그리고 두개의 타입은 같다.<br>std::is_integral은 구조체이고 T가 integral 타입이면 std::true_type을 상속받은 구조체가되고,<br>T가 integral이 아니면 std::false_type을 상속받은 구조체가 된다. 이 2가지 다른 타입으로 템플릿 특수화를 하게되고, 다르게 호출할 수 있게되는 것이다.<br>이번엔 std::true_type인 경우를 살펴보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">nameFromIdx</span><span class="params">(<span class="keyword">int</span> idx)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndAddImpl</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">std</span>::true_type)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    logAndAdd(nameFromIdx(idx));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이렇게 적합한 중복적재된 함수를 호출할 수 있도록 tag를 붙이는 것이 꼬리표 방식이다. 이 꼬리표 방식 매개변수들은 실행시점에서는 전혀 쓰이지 않는다.(아예 인자에 이름도 없다)</p>
+<h3 id="보편-참조를-받는-테플릿을-제한한다"><a href="#보편-참조를-받는-테플릿을-제한한다" class="headerlink" title="보편 참조를 받는 테플릿을 제한한다."></a>보편 참조를 받는 테플릿을 제한한다.</h3><p>태그 방식은 생성자에서는 적용되지 못한다. 왜냐하면 바로 컴파일러가 자동으로 생성하는 이동 및 복사생성자 떄문이다.<br>하나의 생성자만 만들고 거기에 꼬리표 방식을 사용한다고 해도 컴파일러가 생성한 함수가 호출될 수 있기 때문이다.<br>따라서 보편 참조 매개변수를 포함하는 함수 템플릿에 조건을 적절히 제한할 수 있도록 하는 것이 필요한데 그 방법이 std::enable_if를 사용하는것이다.<br>std::enable_if는 컴파일러가 마치 특정 템플릿이 존재하지 않는 것처럼 행동하게 만들 수 있다. 그런 테믈릿을 비활성화된 템플릿이라고 부른다. (기본적으로는 모든 템플릿은 활성화 상태이다)<br>오직 std:enable_if의 조건을 만족할 때에만 활성화된다.<br>즉 우리가 해야될 것은 Person이 아닌 형식의 인수가 전달된 경우에만 Person의 완벽 전달 생성자가 호출되도록 해야한다.<br>다음과 같이 코드를 작성할 수 있다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,</div><div class="line">             <span class="keyword">typename</span> = <span class="keyword">typename</span> <span class="built_in">std</span>::enable_if&lt;조건&gt;::type&gt;</div><div class="line">    explict Person(T&amp;&amp; n);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>조건에는 T가 person이 아닐떄에만 template을 활성화 해야한다. 두 형식이 같은지를 판단하는 std::is_same을 이용한다.<br>따라서 조건은<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">!<span class="built_in">std</span>::is_same&lt;Person,T&gt;::value</div></pre></td></tr></table></figure></p>
+<p>라는 표현식을 사용하여 지정한다. 그러나 아주 정확하지는 않은데, 왼값으로 초기화하는 보편 참조는 항상 왼값 참조로 연역되기 때문이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function">Person <span class="title">p</span><span class="params">(<span class="string">"Nancy"</span>)</span></span>;</div><div class="line"><span class="function"><span class="keyword">auto</span> <span class="title">cloneOfP</span><span class="params">(p)</span></span>; <span class="comment">// 왼값으로 초기화됨</span></div></pre></td></tr></table></figure>
+<p>이때 보편 생성자의 형식 T는 Person&amp;로 연역된다. 따라서 Person과 Person&amp;는 형식이 같지 않으므로 std::is_same은 다르다고 판정한다.<br>따라서 std::is_same<person, person&="">::value는 false가 된다. 이때 좀더 구체적으로 생각해보면 다음 2가지를 무시해야한다는 것도 알 수 있다.</person,></p>
+<ul>
+<li>참조 여부 : 보편 참조 생성자의 활성화 여부를 판단할때 Person&amp;과 Person, Person&amp;&amp;은 같은 형식으로 간주되어야 함.</li>
+<li>const 성과 volatile성 : const Person, const volatile Person, volatile Person 모드 같은 형식으로 간주되어야 함.</li>
+</ul>
+<p>따라서 T가 Person과 같은지 판정하기 전에 T에서 모든 참조 한정사와 const, volatile을 제거하는 수단이 필요하다.<br>이미 표준 라이브러리에서 제공해주는 것이 있는데 바로 std::decay이다.<br>std::decay<t>::type은 T에서 모든 참조와 모든 cv-한정사(const, volatile)를 제거한 형식에 해당한다. 따라서 위의 조건을 좀더 정확하게 표현하면 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">!<span class="built_in">std</span>::is_same&lt;Person, <span class="keyword">typename</span> <span class="built_in">std</span>::decay&lt;T&gt;::type&gt;::value</div></pre></td></tr></table></figure></t></p>
+<p>해당 조건을 적용시켜서 코드를 정리해보면 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;</div><div class="line">        <span class="keyword">typename</span> T,</div><div class="line">        <span class="keyword">typename</span> = <span class="keyword">typename</span> <span class="built_in">std</span>::enable_if&lt;</div><div class="line">                       !<span class="built_in">std</span>::is_same</div><div class="line">                       &lt;Person,</div><div class="line">                        <span class="keyword">typename</span> <span class="built_in">std</span>::decay&lt;T&gt;::type</div><div class="line">                       &gt;::value</div><div class="line">                    &gt;::type</div><div class="line">     &gt;</div><div class="line">     <span class="keyword">explicit</span> Person(T&amp;&amp; n);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>그런데 아직도 생각해야할 것이있다. 바로 파생클래스에 대한 부분이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialPerson</span> :</span> <span class="keyword">public</span> Person</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    SpecialPerson(<span class="keyword">const</span> SpecialPerson&amp; rhs)</div><div class="line">    : Person(rhs)</div><div class="line">    &#123; ... &#125;</div><div class="line">    SpecialPerson(SpecialPerson&amp;&amp; rhs)</div><div class="line">    : Person(<span class="built_in">std</span>::move(rhs))</div><div class="line">    &#123; ... &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>Person의 파생클래스에서 Person의 생성자를 호출하는 부분이다. 이때 SpecialPerson과 Person은 같은 형식 특질이 아니게되어 우리가 의도했던대로 생성자가 호출되지 않는다.<br>따라서 이는 기반클래스에서 다시 수정을 가해야한다. 인수 형식이 단지 Person이 아니면 템플릿화된 생성자를 활성화시키는 것이 아니라,<br>조건을 가하여 Person도 아니고 Person에서 파생된 형식도 아닐 때에만 활성화시키면 될 것이다.<br>이렇게 한형식이 다른 한형식에서 파생된 것인지 확인하는 것도 표준 라이브러리에 있는데 std::is_base_of<t1,t2>::value 가 있다. 만약 T2각 T1에서 파생된 형식이면 참이다. 참고로 사용자 정의 형식은 자기 자신으로부터 파생된 것으로 간주된다.<br>std::is_base_of<t,t>::value는 만일 T가 사용자 정의 형식이면 참이다.(T가 내장형식일때는 거짓)<br>이 조건까지 붙은 생성자를 살펴보도록 하자.</t,t></t1,t2></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;</div><div class="line">        <span class="keyword">typename</span> T,</div><div class="line">        <span class="keyword">typename</span> = <span class="built_in">std</span>::<span class="keyword">enable_if_t</span>&lt;</div><div class="line">                       !<span class="built_in">std</span>::is_base_of</div><div class="line">                       &lt;Person,</div><div class="line">                        <span class="built_in">std</span>::<span class="keyword">decay_t</span>&lt;T&gt;</div><div class="line">                       &gt;::value</div><div class="line">                    &gt;</div><div class="line">    &gt;</div><div class="line">     <span class="keyword">explicit</span> Person(T&amp;&amp; n);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>근데 조건을 추가했다고했는데 왜 std::decay 부분을 std::is_bsae_of 로만 바꾸었을까?<br>이는 위에 설명했던 것처럼 std::is_base_of<t,t>::value는 만일 T가 사용자 정의 형식이면 참이기 때문이다.<br>즉 !std::is_base_of<person, person="">::value 도 참이 되어 의도된 대로 비활성화된다.</person,></t,t></p>
+<p>아직 더 남았다…<br>정수 인수들을 처리하는 Person 생성자 중복적재를 추가하고, 그런 인수들에 대해서 템플릿화된 생성자가 비활성화되도록 조건을 추가해야하는 것이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span></div><div class="line">    &lt;</div><div class="line">        <span class="keyword">typename</span> T,</div><div class="line">        <span class="keyword">typename</span> = <span class="built_in">std</span>::<span class="keyword">enable_if_t</span></div><div class="line">        &lt;</div><div class="line">            !<span class="built_in">std</span>::is_base_of&lt;Person, <span class="built_in">std</span>::<span class="keyword">decay_t</span>&lt;T&gt;&gt;::value &amp;&amp;</div><div class="line">            !<span class="built_in">std</span>::is_integral&lt;<span class="built_in">std</span>::<span class="keyword">remove_reference_t</span>&lt;T&gt;&gt;::value <span class="comment">//이렇게 정수형일때도 비활성화 처리를 한다.</span></div><div class="line">        &gt;</div><div class="line">    &gt;</div><div class="line">    <span class="keyword">explicit</span> Person(T&amp;&amp; n) <span class="comment">//std::string이나 std::string으로 변환되는 인수를 위한 새엇ㅇ자.</span></div><div class="line">    : name(<span class="built_in">std</span>::forward&lt;T&gt;(n)) &#123; ... &#125;</div><div class="line"></div><div class="line">    <span class="keyword">explicit</span> Person(<span class="keyword">int</span> idx) <span class="comment">//정수 인자를 위한 생서앚.</span></div><div class="line">    : name(nameFromIdx(idx)) &#123;</div></pre></td></tr></table></figure>
+<h3 id="절충점들"><a href="#절충점들" class="headerlink" title="절충점들"></a>절충점들</h3><p>그런데 이렇게까지 했는데도 완벽전달의 단점은 존재한다. 바로 완벽전달이 실패하는 경우들이 있다는 것이다.<br>그리고 잘못된 인자를 넘겼을때 나오는 오류 메시지가 해석하기 난해하다는 점이다.<br>다음과 같이 호출했다고 해보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">Person <span class="title">p</span><span class="params">(<span class="string">u"Konrad Zuse"</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>이는 char16_t(c++11에서 도입된 16비트 문자를 표현하는 방식)들로 이루어진 문자열 리터럴을 전달해서 Person 객체를 생성한다고 해보자.<br>완벽 전달자가 아니면 const char16_t[12]를 int나 std::string으로 변환할 수 없음을 뜻하는 직관적인 오류 메시지를 출력한다.<br>하지만 보편 참조는 이를 생성자에 자연스럽게 묶고, 여러층의 함수 호출들을 거쳐서 최종적인 도착점에 도착해서야 오류메시지를 출력한다(아주 많은 오류메시지를 보게될 수 있다)<br>이런 경우는 어떻게 해야될까?<br>Person의 경우 함수의 보편 참조 매개변수가 std::string에 대한 초기치로 쓰일 것을 알고 있으므로 예상가능한 부분에서 static_assert를 활용하는 방법도 있다.<br>또는 std::is_constructible이라는 형식특질을 사용하여 한 형식의 객체(또는 집합)를 다른 한 형식의 객체(또는 집합)로부터 생성할 수 있는지를 컴파일 시점에서 판정할 수도 있다.<br>실제로 적용해보자.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span></div><div class="line">    &lt;</div><div class="line">        <span class="keyword">typename</span> T,</div><div class="line">        <span class="keyword">typename</span> = <span class="built_in">std</span>::<span class="keyword">enable_if_t</span></div><div class="line">        &lt;</div><div class="line">            !<span class="built_in">std</span>::is_base_of&lt;Person, <span class="built_in">std</span>::<span class="keyword">decay_t</span>&lt;T&gt;&gt;::value &amp;&amp;</div><div class="line">            !<span class="built_in">std</span>::is_integral&lt;<span class="built_in">std</span>::<span class="keyword">remove_reference_t</span>&lt;T&gt;&gt;::value</div><div class="line">        &gt;</div><div class="line">    &gt;</div><div class="line">    <span class="keyword">explicit</span> Person(T&amp;&amp; n)</div><div class="line">    : name(<span class="built_in">std</span>::forward&lt;T&gt;(n))</div><div class="line">    &#123;</div><div class="line">        <span class="comment">//T 객체로부터 std::string을 생성할 수 있는지 점검한다</span></div><div class="line">        <span class="keyword">static_assert</span>(</div><div class="line">            <span class="built_in">std</span>::is_constructible&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, T&gt;::value,</div><div class="line">            <span class="string">"Parametre n can't be used to construct a std::string"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>이렇게하면 std::string의 생성에 사용할 수 없는 형식의 인수로 Person객체를 생성하려 할 떄 구체적으로 지적하는 오류 메시지를 볼 수 있다.<br>하지만 안타깝게도 모든 오류가 다 출력되고 난 뒤에 이 메시지는 출력될 것이다.</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>보편 참조와 중복적재의 조합에 대한 대안으로는 구별되는 함수 이름 사용, 매개변수를 const에 대한 왼값 참조로 전달, 매개변수를 값으로 전달, 꼬리표 배분 사용 등이 있다.</li>
+<li>std::enable_if를 사용하여 템플릿의 활성화 상태를 조정하여 보편 참조와 중복적재를 함꼐 사용할 수 있다.</li>
+<li>보편 참조 매개변수는 효율성 면에서 장점인 경우가 많지만, 대체로 사용성 면에서는 단점이 된다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://LeeInJae.github.io/2017/10/17/emc-27/" data-id="cj8ue277t000128viv4aihe5z" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/LeeInJae" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/10/15/test-github-connect/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">test_github_connect</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/10/17/emc-27/" class="title">chapter27. 보편 참조에 대한 중복적재 대신 사용할 수 있는 기법들</a></p>
+                            <p class="item-date"><time datetime="2017-10-16T15:00:37.000Z" itemprop="datePublished">2017-10-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/10/15/test-github-connect/" class="title">test_github_connect</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T10:26:33.000Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/10/15/hello-world/" class="title">Hello World</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T10:24:14.639Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/15/EMC-26/" class="title">EMC_Chapter26</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T09:21:52.000Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/15/EMC_25/" class="title">EMC_Chatper25</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T06:55:59.000Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">7</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/EMC/" style="font-size: 10px;">EMC</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/std-forward/" style="font-size: 10px;">std::forward</a> <a href="/tags/std-move/" style="font-size: 10px;">std::move</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/LeeInJae">Git</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 cowspirit</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://LeeInJae.github.io/2017/10/17/emc-27/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
