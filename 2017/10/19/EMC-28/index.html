@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>chapter28. 참주 축약을 숙지하라. | 프로그래밍 안녕</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="참조 축약템플릿 매개변수에 대해 연역된 형식에는 그 인수가 왼값인지 아니면 오른값인지에 대한 정보가 부호화 되어있음 12template&amp;lt;typename T&amp;gt;void func(T&amp;amp;&amp;amp; param); 템플릿 매개변수 T에 대해 연역된 형식에는 param으로 전달된 인수가 왼값이었는지 아니면 오른값이었는지에 대한 정부가 부호화 될 것이라는">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter28. 참주 축약을 숙지하라.">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/10/19/EMC-28/index.html">
+<meta property="og:site_name" content="프로그래밍 안녕">
+<meta property="og:description" content="참조 축약템플릿 매개변수에 대해 연역된 형식에는 그 인수가 왼값인지 아니면 오른값인지에 대한 정보가 부호화 되어있음 12template&amp;lt;typename T&amp;gt;void func(T&amp;amp;&amp;amp; param); 템플릿 매개변수 T에 대해 연역된 형식에는 param으로 전달된 인수가 왼값이었는지 아니면 오른값이었는지에 대한 정부가 부호화 될 것이라는">
+<meta property="og:updated_time" content="2017-10-18T17:09:12.673Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter28. 참주 축약을 숙지하라.">
+<meta name="twitter:description" content="참조 축약템플릿 매개변수에 대해 연역된 형식에는 그 인수가 왼값인지 아니면 오른값인지에 대한 정보가 부호화 되어있음 12template&amp;lt;typename T&amp;gt;void func(T&amp;amp;&amp;amp; param); 템플릿 매개변수 T에 대해 연역된 형식에는 param으로 전달된 인수가 왼값이었는지 아니면 오른값이었는지에 대한 정부가 부호화 될 것이라는">
+    
+
+    
+        <link rel="alternate" href="/" title="프로그래밍 안녕" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">열심히하자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/source/index.html">about</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Entradas',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Programming/">Programming</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-EMC-28" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        chapter28. 참주 축약을 숙지하라.
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2017/10/19/EMC-28/" class="article-date">
+            <time datetime="2017-10-18T16:31:30.000Z" itemprop="datePublished">2017-10-19</time>
+        </a>
+    </div>
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="참조-축약"><a href="#참조-축약" class="headerlink" title="참조 축약"></a>참조 축약</h3><p>템플릿 매개변수에 대해 연역된 형식에는 그 인수가 왼값인지 아니면 오른값인지에 대한 정보가 부호화 되어있음</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T&amp;&amp; param)</span></span>;</div></pre></td></tr></table></figure>
+<p>템플릿 매개변수 T에 대해 연역된 형식에는 param으로 전달된 인수가 왼값이었는지 아니면 오른값이었는지에 대한 정부가 부호화 될 것이라는 결론을 이끌 수 있음.<br>정리하면 왼값 인수가 전달되면 T는 왼값 참조로 연역되고, 오른값이 전달되면 T는 비참조(non-reference) 형식으로 연역된다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget <span class="title">widgetFactory</span><span class="params">()</span></span>; <span class="comment">//오른값을 돌려줌</span></div><div class="line"></div><div class="line">Widget w; <span class="comment">//왼값임</span></div><div class="line"></div><div class="line">func(w); <span class="comment">//왼값으로 호출하므로 T는 Widget&amp;</span></div><div class="line"></div><div class="line">func(widgetFactory()); <span class="comment">// 오른값으로 호출하므로 T는 Widget</span></div></pre></td></tr></table></figure>
+<p>먼저, c++에서 참조에 대한 참조는 위법이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> x;</div><div class="line">...</div><div class="line"><span class="keyword">auto</span>&amp; &amp;rx = x; <span class="comment">//오류다</span></div></pre></td></tr></table></figure>
+<p>그런데 보편 참조를 넘겨주는 함수 템플릿에서는 어떨까?<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T&amp;&amp; param)</span></span>; </div><div class="line"></div><div class="line">func(w); <span class="comment">//func를 왼값으로 호출(T는 Widget&amp;로 연역)</span></div></pre></td></tr></table></figure></p>
+<p>T는 Widget&amp;으로 연역됨은 알고있다. 따라서 func는 다음과 같이 인스턴스화 될 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(Widget&amp; &amp;&amp; param)</span></span></div></pre></td></tr></table></figure></p>
+<p>이는 참조에 대한 참조이다. 그래도 컴파일러는 오류를 내지 않는다.<br>보편 참조 param은 왼값으로 초기화되므로, param 형식은 왼값 참조가 된다.<br>그래서 실제로 인스턴스화 되는 모습은 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(Widget&amp; param)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>이렇게 되는 과정에는 참조 축약이라는 것이 있다.<br>참조에 대한 참조를 산출하는 것이 특정 문맥에서만 허용시키는 기법이다. 템플릿 인스턴스화는 그 중 하나이다.<br>참조는 왼값,오른값 참조 2개이므로 조합의 수는 총 4가지이다. 그리고 다음의 법칙에 의해 참조 축약이 된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">두 참조 중 하나라도 왼값 참조이면 결과는 왼값 참조</div><div class="line">둘다 오른값 참조이면 오른값 참조</div></pre></td></tr></table></figure></p>
+<p>위에서 본 함수를 다시 보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(Widget&amp; &amp;&amp; param)</span></span></div></pre></td></tr></table></figure></p>
+<p>왼값 참조(Widget&amp;)에 대한 오른값 참조(&amp;&amp; param)이다. 따라서 참조 축약 규칙에 의거 왼값 참조가 된다.<br>sdt::forward는 이 참조 축약을 이용한다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp;&amp; fParam)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    ...</div><div class="line">    someFunc(<span class="built_in">std</span>::forward&lt;T&gt;(fParam)); <span class="comment">//fParam을 someFunc로 전달</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>에서 std::forward의 임무는 f에 전달된 인수가 오른값이라는 점이 T에 부호화되어있으면 오직 그럴때에만 fParam(왼값) 을 오른값으로 캐스팅</p>
+<p>std::forward는 어떻게 작동할 수 있는것일까?<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="function">T&amp;&amp; <span class="title">forward</span><span class="params">(<span class="keyword">typename</span> remove_reference&lt;T&gt;::type&amp; param)</span> </span></div><div class="line"><span class="function"></span>&#123;</div><div class="line"><span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;T&amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>std::forward의 작동방식의 대략 위와 같다.<br>T에 대하여 왼값 인수를 전달하면 T는 Widget&amp;로 연역되어 std::forward<widget&>로 인스턴스화 된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp; &amp;&amp; <span class="title">forward</span><span class="params">(<span class="keyword">remove_reference_t</span>&lt;Widget&amp;&gt;&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp; &amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></widget&></p>
+<p>그리고 형식 특질에 의해 std::remove_reference<widget&>::type은 Widget을 산출한다.<br>따라서 std::forward는 다음과 같이 인스턴스화 된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp; &amp;&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp; &amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></widget&></p>
+<p>그리고 참조 축약은 템플릿 인스턴스화 뿐만 아니라 반환 형식과 캐스팅에도 적용된다.<br>따라서 위의 반환형식과 캐스팅 타입 또한 Widget&amp;로 축약된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이러한 과정을 통해서 std::forward에 왼값을 넘겨주면 왼값이 반환된다.<br>그러면 오른값은 어떨까?<br>오른값을 넘겼을때(C++14 기준으로 작성함) 다음과 같음<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp;&amp; <span class="title">forward</span><span class="params">(<span class="keyword">remove_reference_t</span>&lt;Widget&gt;&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이때 비참조 형식에 대해서 std::remove_reference를 적용하면 처음의 형식이 산출된다. 따라서 최종적인 모습은 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp;&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>참조에 대한 참조가 없다. 따라서 참조 축약도 일어나지 않는다. 함수가 돌려준 오른값 참조는 오른값이므로, fParam을 왼값으로 바꾼다.</p>
+<h3 id="참조-축약-발생-상황"><a href="#참조-축약-발생-상황" class="headerlink" title="참조 축약 발생 상황"></a>참조 축약 발생 상황</h3><ul>
+<li>템플릿 인스턴스화</li>
+<li>auto 변수에 대한 형식 연역(템플릿 인스턴스화 규칙과 동일)</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget <span class="title">widgetFactory</span><span class="params">()</span></span>;</div><div class="line">Widget w;</div><div class="line"></div><div class="line"><span class="keyword">auto</span>&amp;&amp; w1 = w; </div><div class="line"><span class="keyword">auto</span>&amp;&amp; w2 = widgetFactory();</div></pre></td></tr></table></figure>
+<p>w1은 왼값으로 초기화하며 auto 의 형식은 Widget&amp;로 연역된다.<br>(마치 w가 매개변수로 들어온 인자라고 생각하면 auto는 Widget&amp;로 연역된다.)<br>Widget&amp; &amp;&amp; w1 = w 이므로 참조 축약에 의해서 Wdiget&amp; w1 = w 가 된다.</p>
+<p>w2는 참조 축약이 일어날 것이 없으므로 오른값 참조로 연역된다.</p>
+<p>정리하면 보편 참조는 이 2가지가 발생하는 참조이다.</p>
+<ul>
+<li>형식 연역에서 왼값과 오른값이 구분된다. T 형식의 왼값은 형식 T&amp; 연역, T 형식의 오른값은 T로 연역</li>
+<li>참조 축약이 적용된다.</li>
+</ul>
+<p>다음으로 2가지가 더 있다. 그중 한가지는</p>
+<ul>
+<li>typedef와 별칭 선언이다.</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">typedef</span> T&amp;&amp; RvalueRefToT;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>위와 같은 클래스를 왼값 참조 형식으로 인스턴스화 해본다고 하자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Widget&lt;<span class="keyword">int</span>&amp;&gt; w;</div><div class="line"></div><div class="line"><span class="comment">//Widget의 T를 int&amp;로 대체하면 다음과 같다</span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span>&amp; &amp;&amp; RvalueRefToT;</div></pre></td></tr></table></figure></p>
+<p>이는 참조 축약에 의해서 다음과 같이 된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span>&amp; RvalueRefToT;</div></pre></td></tr></table></figure></p>
+<p>마지막으로 참조 축약이 일어나는 상황은 decltype사용이다.<br>컴파일러가 decltype에 관여하는 형식을 분석하는 도중에 참조에 대한 참조가 발생하면 참조 축약이 일어난다.</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>참조 축약은 템플릿 인스턴스화, auto 형식 연역, typedef와 별칭 선언, decltype의 지정 및 사용에서 발생</li>
+<li>원래 두 참조중 하나라도 왼값 참조 이면 결과는 왼값참조 아니면 오른값 참조</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://LeeInJae.github.io/2017/10/19/EMC-28/" data-id="cj8xaooxx0002z0viubegcfrm" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>seguir:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/LeeInJae" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/10/15/test-github-connect/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">antiguo</strong>
+        <p class="article-nav-title">test_github_connect</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recientes</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/19/EMC-28/" class="title">chapter28. 참주 축약을 숙지하라.</a></p>
+                            <p class="item-date"><time datetime="2017-10-18T16:31:30.000Z" itemprop="datePublished">2017-10-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/10/15/test-github-connect/" class="title">test_github_connect</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T10:26:33.000Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/10/15/hello-world/" class="title">Hello World</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T10:24:14.639Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/15/EMC-26/" class="title">EMC_Chapter26</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T09:21:52.000Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/15/EMC_25/" class="title">EMC_Chatper25</a></p>
+                            <p class="item-date"><time datetime="2017-10-15T06:55:59.000Z" itemprop="datePublished">2017-10-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categorias</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archivos</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">7</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">etiquetas</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">etiqueta cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/EMC/" style="font-size: 10px;">EMC</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/std-forward/" style="font-size: 10px;">std::forward</a> <a href="/tags/std-move/" style="font-size: 10px;">std::move</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/LeeInJae">Git</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 cowspirit</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://LeeInJae.github.io/2017/10/19/EMC-28/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
