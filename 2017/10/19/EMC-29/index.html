@@ -3,16 +3,22 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Arxiu: 2017 | 프로그래밍 안녕</title>
+    <title>EMC_29 | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta property="og:type" content="website">
-<meta property="og:title" content="프로그래밍 안녕">
-<meta property="og:url" content="https://LeeInJae.github.io/archives/2017/index.html">
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다. 우선 이동 의미론을 지원하">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EMC_29">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/10/19/EMC-29/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
+<meta property="og:description" content="이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다. 우선 이동 의미론을 지원하">
+<meta property="og:updated_time" content="2017-10-18T18:04:53.565Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="프로그래밍 안녕">
+<meta name="twitter:title" content="EMC_29">
+<meta name="twitter:description" content="이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다. 우선 이동 의미론을 지원하">
     
 
     
@@ -126,292 +132,140 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <i class="icon fa fa-archive"></i>Arxiu: 2017
+    <a class="page-title-link" href="/categories/Programming/">Programming</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            
+                            <article id="post-EMC-29" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        EMC_29
+        </h1>
+    
 
-    
-    
+            </header>
         
         
-        <section class="archives-wrap">
-            <div class="archive-year-wrap">
-                <a href="/archives/2017" class="archive-year"><i class="icon fa fa-calendar-o"></i>2017</a>
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2017/10/19/EMC-29/" class="article-date">
+            <time datetime="2017-10-18T17:42:47.000Z" itemprop="datePublished">2017-10-19</time>
+        </a>
+    </div>
+
+                
             </div>
-            <div class="archives">
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
         
-        <div class="article-meta">
-            <div class="category">
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="이동-의미론"><a href="#이동-의미론" class="headerlink" title="이동 의미론"></a>이동 의미론</h3><p>C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.<br>예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.<br>그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다.</p>
+<p>우선 이동 의미론을 지원하지 않는 형식들이 많다라는 점이다. C++11에선 C++98에서 이동을 복사보다 빠르게 구현할 수 있는 형식들에 대해서 이동 연산들을 추가했다.<br>그런디 이동 연산을 명시적으로 지원하지는 않는 형식에 대해 C++11이 자동으로 이동 연산들을 작성해 주긴 하지만 형식에</p>
+<ul>
+<li>복사 연산</li>
+<li>이동 연산</li>
+<li>소멸자<br>위의 3개중 하나라도 있으면 그러한 자동 작성은 일어나지 않는다. 다시말해 저 3개를 다 안만들어야만 자동으로 만들어준다.<br>이러한 경우 자동으로 이동 연산이 만들어지지 않았을때 이동은 복사연산으로 대체되어 원하는 성능의 효과를 가져올 수 없다.<br>또한 명시적으로 정의 되었다하더라도, 컨테이너에 담긴 내용을 정말로 저렴하게 이동하는 방법이 없는 컨테이너들도 있고,<br>컨테이너가 제공하는 진정으로 저렴한 이동 연산이 요구하는 까다로운 조건을 컨테이너 요소들이 만족할 수 없는 경우도 있기 때문이다.</li>
+</ul>
+<h3 id="std-vector"><a href="#std-vector" class="headerlink" title="std::vector"></a>std::vector</h3><p>vector 같은 경우는 성능상의 이점을 이동을 통해 이룰 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Widget&gt; vw1;</div><div class="line"></div><div class="line"><span class="comment">//vw1을 vw2로 이동. 이 이동은 상수시간이 실행.</span></div><div class="line"><span class="comment">//오직 vw1과 vw2의 포인터들만 수정</span></div><div class="line"><span class="keyword">auto</span> vw2 = <span class="built_in">std</span>::move(vw1);</div></pre></td></tr></table></figure></p>
+<p>즉 원본 컨테이너의 내용을 가리키는 포인터를 대상 컨테이너로 복사하고 원본 컨테이너의 포인터를 널로 설정하는 것이다.</p>
+<h3 id="std-array"><a href="#std-array" class="headerlink" title="std::array"></a>std::array</h3><p>이번에는 std::array를 살펴보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;Widget, 10000&gt; aw1; <span class="comment">//aw1에 자료 채움</span></div><div class="line"></div><div class="line"><span class="comment">//aw1을 aw2로 이동</span></div><div class="line"><span class="comment">//이 이동은 선형시간</span></div><div class="line"><span class="comment">//모든 원소가 aw2로 이동된다.</span></div><div class="line"><span class="keyword">auto</span> aw2 = <span class="built_in">std</span>::move(aw1);</div></pre></td></tr></table></figure></p>
+<p>std::array 객체에는 포인터가 없고, std::array 객체 자체에 원소들이 저장된다.<br>std::vector 와의 차이점은 aw1의 각 원소가 aw2로 이동된다는 것이고, 이는 원본과 대상의 포인터만 교체하는 거에비해 비싸다.<br>하지만 std::array를 복사하는 것보다는 빠르다고 할 수 있다.</p>
+<h3 id="std-string"><a href="#std-string" class="headerlink" title="std::string"></a>std::string</h3><p>std::string은 상수 시간 이동과 선형 시간 복사를 제공한다. 이점만 봤을때는 이동이 복사보다 빠를 것 같지만 반드시 그렇지는 않을 수 있다.<br>문자열 구현 중에는 작은 문자열 최적화(small string optimization, SSO)를 사용하는 것들이 많다. 이런 구현은 ‘작은’문자열(용량이 15이하)을 std::string 객체 안의 버퍼에 저장하고, 힙에 할당한 저장소는 사용하지 않는다.<br>이러한 SSO 기반 구현을 사용한다면 작은 문자열의 이동은 복사보다 빠르지 않다. 대체로 이동이 복사보다 빠른 것은 포인터 하나만 복사하면 되기 때문인데 이러한 경우는 그렇게 적용할 수 없기 때문이다.<br>즉, 아주 긴 문자열을 사용하지 않는 이상 move의 이점을 얻기란 어렵다.</p>
+<p>또한 확실히 move가 일어날 상황임에도 불구하고 copy가 일어나는 경우가 있다. 결론적으로 move연산이 일어나려면 move 연산이 어떠한 예외도 던지지 않아야한다.<br>바꿔말해 move가 noexcept로 선언되어 있지 않으면 컴파일러는 복사를 실행할 수도 있다는 얘기다.</p>
+<ul>
+<li>이동 연산이 없다: 이동할 객체가 이동 연산을 제공하지 않음(복사로 처리)</li>
+<li>이동이 더 빠르지 않다(복사보다) : 내부적인 구조에 의해 이동할 객체의 이동 연산이 복사보다 빠르지 않음</li>
+<li>이동을 사용할 수 없다: noexcept로 선언되어 있지 않을때는 복사를 수행할 수 있다.</li>
+</ul>
+<p>한가지더 원본 객체가 왼값 : 아주 드문경우지만 오직 오른값만 이동 연산의 원본이 될 수 있는 경우<br>까지 총 4가지 상황에서는 이동 연산이 복사보다 더 빠르지 않는 경우이다.<br>주의해야할 곳은 대부분 template 함수를 만들때일 것이다. 실제 적용될 타입이 무엇인지 모르기 때문에 move에 대한 성능을 확신할수 없는 것이다.<br>반면 정확하게 move연산이 있고 복사보다 이득을 볼 수 있는 상황이라면 믿고 move를 쓰는것이 성능 향상에 도움을 줄 것이다.</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>이동 연산들이 존재하지 않고, 저렴하지 않고, 적용되지 않을 상황에 대해 알고있어야함</li>
+<li>형식들과 이동 의미론 지원 여부를 미리 알 수 있는 경우에는 move 가 성능 향상을 가져올 것이라고 확신하고 써도 됨.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
             
-            </div>
-            <div class="date"><time datetime="2017-10-18T18:05:14.000Z" itemprop="datePublished">2017-10-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/19/EMC-29-1/">EMC_29</a>
-        </h1>
-    
 
-        <p class="article-excerpt">
-            
-        </p>
+
+
+    <a data-url="https://LeeInJae.github.io/2017/10/19/EMC-29/" data-id="cj8xeamfv0002xkvijfo14esa" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
     </div>
 </article>
-    
 
+    <section id="comments">
     
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
         
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-18T17:42:47.000Z" itemprop="datePublished">2017-10-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/19/EMC-29/">EMC_29</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다.
-우선 이동 의미론을 지원하
-        </p>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-</article>
-    
-        </div>
-    
 
     
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-18T16:31:30.000Z" itemprop="datePublished">2017-10-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/19/EMC-28/">chapter28. 참조 축약을 숙지하라.</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            참조 축약템플릿 매개변수에 대해 연역된 형식에는 그 인수가 왼값인지 아니면 오른값인지에 대한 정보가 부호화 되어있음
-12template&lt;typename T&gt;void func(T&amp;&amp; param);
-템플릿 매개변수 T에 대해 연역된 형식에는 param으로 전달된 인수가 왼값이었는지 아니면 오른값이었는지에 대한 정부가 부호화 될 것이라는
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            
-            </div>
-            <div class="date"><time datetime="2017-10-15T10:26:33.000Z" itemprop="datePublished">2017-10-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/15/test-github-connect/">test_github_connect</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            .꿀개꿀개꿀개
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            
-            </div>
-            <div class="date"><time datetime="2017-10-15T10:24:14.639Z" itemprop="datePublished">2017-10-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/15/hello-world/">Hello World</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-15T09:21:52.000Z" itemprop="datePublished">2017-10-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/15/EMC-26/">EMC_Chapter26</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            26. 보편참조에 대한 중복적재를 피하라사람 이름 하나를 매개변수로 받고, 현재 날짜와 시간을 기록 후 전역 자료구조에 추가하는 함수.1234567891011std::multiset&lt;std::string&gt; names; //전역 자료구조void logAndAdd(const std::string&amp; name)&#123;    auto now =
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-15T06:55:59.000Z" itemprop="datePublished">2017-10-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/15/EMC_25/">EMC_Chatper25</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            항목 25: 오른값 참조에는 std::move를, 보편 참조에는 std::forward를 사용하라.오른값 참조는 이동할 수 있는 객체에만 묶이고, 어떤 매개변수가 오른값 참조라면, 그 참조에 묶인 객체를 이동할 수 있음이 확실하다.
-1234class Widget &#123;	Widget(Widget&amp;&amp; rhs); //rhs 는 이동이 가능한 
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            
-            </div>
-            <div class="date"><time datetime="2017-10-12T20:00:43.000Z" itemprop="datePublished">2017-10-13</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/13/second-post/">second-post</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            
-            </div>
-            <div class="date"><time datetime="2017-10-12T19:22:21.000Z" itemprop="datePublished">2017-10-13</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/13/cow-test/">공부하자 열심히</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-
-    </div></section>
-
+    </section>
 
 
                         </div>
@@ -472,6 +326,29 @@ Quick
             
         </ul>
     </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/10/19/EMC-29-1/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">més nou</strong>
+        <p class="article-nav-title">
+        
+            EMC_29
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2017/10/19/EMC-28/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">antic</strong>
+        <p class="article-nav-title">chapter28. 참조 축약을 숙지하라.</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
     
     <div class="widgets-container">
         
@@ -618,11 +495,13 @@ Quick
     var disqus_shortname = 'hexo-theme-hueman';
     
     
+    var disqus_url = 'https://LeeInJae.github.io/2017/10/19/EMC-29/';
+    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>
