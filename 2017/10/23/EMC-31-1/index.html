@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>EMC_31. 기본 갈무리 모드를 피하라 | 프로그래밍 안녕</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="c++,EMC,std::move,std::forward" />
+    
+    <meta name="description" content="기본 갈무리 모드를 피하라C++11에서 기본 갈무리(capture) 모드는 두 가지다  참조 갈무리(by reference) 값에 의한 갈무리(by value)  기본 갈무리 모드에서는 문제가 될 수 있는 것들이 있는데 이를 살펴보자. 참조 갈무리참조 갈무리를 사용하는 클로저는 지역 변수 또는 람다가 정의된 범위에서 볼 수 있는 매개변수에 대한 참조를 가지">
+<meta name="keywords" content="c++,EMC,std::move,std::forward">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EMC_31. 기본 갈무리 모드를 피하라">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/10/23/EMC-31-1/index.html">
+<meta property="og:site_name" content="프로그래밍 안녕">
+<meta property="og:description" content="기본 갈무리 모드를 피하라C++11에서 기본 갈무리(capture) 모드는 두 가지다  참조 갈무리(by reference) 값에 의한 갈무리(by value)  기본 갈무리 모드에서는 문제가 될 수 있는 것들이 있는데 이를 살펴보자. 참조 갈무리참조 갈무리를 사용하는 클로저는 지역 변수 또는 람다가 정의된 범위에서 볼 수 있는 매개변수에 대한 참조를 가지">
+<meta property="og:updated_time" content="2017-10-22T15:50:20.720Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EMC_31. 기본 갈무리 모드를 피하라">
+<meta name="twitter:description" content="기본 갈무리 모드를 피하라C++11에서 기본 갈무리(capture) 모드는 두 가지다  참조 갈무리(by reference) 값에 의한 갈무리(by value)  기본 갈무리 모드에서는 문제가 될 수 있는 것들이 있는데 이를 살펴보자. 참조 갈무리참조 갈무리를 사용하는 클로저는 지역 변수 또는 람다가 정의된 범위에서 볼 수 있는 매개변수에 대한 참조를 가지">
+    
+
+    
+        <link rel="alternate" href="/" title="프로그래밍 안녕" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">열심히하자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/source/index.html">about</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Programming/">Programming</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-EMC-31-1" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        EMC_31. 기본 갈무리 모드를 피하라
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2017/10/23/EMC-31-1/" class="article-date">
+            <time datetime="2017-10-22T15:12:33.000Z" itemprop="datePublished">2017-10-23</time>
+        </a>
+    </div>
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="기본-갈무리-모드를-피하라"><a href="#기본-갈무리-모드를-피하라" class="headerlink" title="기본 갈무리 모드를 피하라"></a>기본 갈무리 모드를 피하라</h3><p>C++11에서 기본 갈무리(capture) 모드는 두 가지다</p>
+<ul>
+<li>참조 갈무리(by reference)</li>
+<li>값에 의한 갈무리(by value)</li>
+</ul>
+<p>기본 갈무리 모드에서는 문제가 될 수 있는 것들이 있는데 이를 살펴보자.</p>
+<h3 id="참조-갈무리"><a href="#참조-갈무리" class="headerlink" title="참조 갈무리"></a>참조 갈무리</h3><p>참조 갈무리를 사용하는 클로저는 지역 변수 또는 람다가 정의된 범위에서 볼 수 있는 매개변수에 대한 참조를 가지게 된다. 람다에 의해 생성된 클로저의 수명이 그 지역 변수나 매개변수의 수명보다 오래 지속되면, 클로저 안의 참조는 대상을 잃는다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> FilterContainer = <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::function&lt;<span class="keyword">bool</span>(<span class="keyword">int</span>)&gt;&gt;;</div><div class="line"></div><div class="line">FilterContainer filters;</div><div class="line"></div><div class="line"><span class="comment">//필터링 함수들</span></div><div class="line">filters.emplace_back([](<span class="keyword">int</span> value)&#123; <span class="keyword">return</span> value % <span class="number">5</span> == <span class="number">0</span>; &#125;);</div></pre></td></tr></table></figure></p>
+<p>이 컨테이너에서 5의 배수를 선별하는 필터 함수를 추가하는 예이다.<br>그런데 나누는수(제수) 는 실행시점에 계산해야 할 수도 있다. 즉 5를 람다안에 하드코딩 하지 않는 것이다. 따라서 다음과 같이 필터를 추가한다고 생각해보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addDivisorFilter</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> calc1 = computeSomeValue1();</div><div class="line">    <span class="keyword">auto</span> calc2 = computeSomeValue2();</div><div class="line"></div><div class="line">    <span class="keyword">auto</span> divisor = computeDivisor(calc1, calc2);</div><div class="line"></div><div class="line">    filters.emplace_back </div><div class="line">    (</div><div class="line">        [&amp;](<span class="keyword">int</span> value) &#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125; <span class="comment">//위험 divisor에 대한 참조가 대상을 잃을 수 있음</span></div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>람다는 지역 변수 divisor를 참조하는데 그 변수는 addDivisorFilter가 반환되면 더이상 존재하지 않게된다. 이떄부터 filters는 미정의 행동을 하게된다.<br>자세히 풀어설명하면 지역변수 divisor가 클로저 객체에 레퍼런스로 들어가는데 지역변수는 해당 함수가 반환되면 같이 반환되므로 filters에서 멤버로 쓰는 divisor는 미정의 행동을 유발한다.<br>그럼 divisor의 참조 갈무리를 명시적으로 지정하면 어떻게 될까? 똑같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">filters.emplace_back</div><div class="line">(</div><div class="line">    [&amp;divisor](<span class="keyword">int</span> value) &#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125;</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>어차피 divisor의 수명은 함수가 반환되면 다하기 때문에 똑같이 문제가 된다. 그런데 장점이 있다. 프로그래머가 divisor라는 이름을 명시적으로 참조로 지정함으로서 이 변수가 람다의 클로저에서 살아 있어야 한다는 점을 깨닫게 해줄 수 있기 때문이다.<br>[&amp;]은 그 어떤 참조도 대상을 잃지 않아야 한다 라는 일반적은 경고보닫 좀 더 구체적이다.<br>클로저가 즉시 사용되고, 복사되지 않는다는게 보장되면 사실 크게 상관은 없다. 하지만 만약 람다를 복사해서 사용할 여지가 있거나 문맥에서 클로저보다 참조된 변수가 먼저 소멸된다면 여전히 문제는 발생하게 된다. 따라서 명시적인 갈무리 표현이 더 좋은 것은 확실하다.<br>참고로 c++14에서는 람다의 매개변수를 지정할 떄 auto를 사용할 수 있다.</p>
+<p>divisor와 관련된 문제를 해결하는 방법 중 하나는 기본 값 갈무리 모드를 사용하는 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">filters.emplace_back</div><div class="line">([=](<span class="keyword">int</span> value)&#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125;); <span class="comment">//divisor가 대상을 잃지 않는다.</span></div></pre></td></tr></table></figure></p>
+<p>하지만 만병통치약은 아니다. 만약 포인터를 값으로 갈무리하면 그 포인터는 람다에 의해 생성된 클로저 안으로 복사되는데 람다 바깥의 어떤 코드가 그 포인터를 delete로 사제하지 않는다는 보장은 없고, 글허게 되면 포인터 복사본은 지칭 대상을 잃게된다.<br>그렇다면 smart pointer를 사용하면 어떨까? 다음의 코드를 살펴보자.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addFilter</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">//필터를 filters에 추가</span></div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> divisor; <span class="comment">//Widget의 필터에 쓰인다.</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Widget::addFilter() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    filters.emplace_back</div><div class="line">    ( [=](<span class="keyword">int</span> value)&#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125;); <span class="comment">//기본값 갈무리이다.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>람다는 divisor에 의존하는데 값 갈무리 모드에서는 divisor의 값이 람다가 생성하는 클로저 안으로 복사되므로 안전하다라고 생각할 수 있다. 하지만 철저히 완전히 틀린 생각이다.<br>갈무리는 오직 람다가 생성된 범위 안에서 보이는, static이 아닌 지역 변수(매개변수 포함)에만 적용된다. Widget::addFilter의 본문에서 divisor는 지역 변수가 아니라 클래스의 한 자료 멤버이므로 갈무리 될 수 없다.<br>또한 기본 갈무리 모드를 뜻하는 “=”를 제거하면 컴파일 조차 안된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Widget::addFilter() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    filters.emplace_back</div><div class="line">    ( [](<span class="keyword">int</span> value)&#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125;); <span class="comment">//divisor를 사용할 수 없다.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>divisor를 명시적으로 갈무리(값 또는 참조로)하는 갈무리 절은 컴파일 되지 안흔다. divisor는 지역변수도, 매개변수도 아니기 때문이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Widget::addFilter() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    filters.emplace_back</div><div class="line">    ( [divisor](<span class="keyword">int</span> value)&#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125;); <span class="comment">//갈무리할 지역에 divisor가 없음</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>정리하면 값 갈무리 절이 divisor를 갈무리하는 것도 아니고, 그렇다고 기본 값 갈무리 절이 없으면 코드가 컴파일되지도 앟는다. 이유는 암묵적인 this 때문이다.<br>모든 비static 멤버 함수에는 this 포인터가 있으며, 클래스의 멤버 함수를 언급할때마다 그 포인터가 쓰인다. 여기서는 Widget의 임의의 멤버 함수에서 컴파일러는 divisor를 this-&gt;divisor로 대체한다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Widget::addFilter() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">auto</span> currentObjectPtr = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">    filters.emplace_back</div><div class="line">    ([currentObjectPtr](<span class="keyword">int</span> value)</div><div class="line">    &#123; </div><div class="line">        <span class="keyword">return</span> value % currentObjectPtr-&gt;divisor == <span class="number">0</span>; </div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<p>이점을 이해한다면 람다에서 만들어진 클로저의 유효성이 해당 Widget객체(클로저가 가진 this 복사본의 원본에 해당하는)의 수명에 의해 제한된다는 점도 이해할 수 있다.<br>filters의 함수가 쓰이기 전에 currentObjectPtr의 수명이 다한다면 미정의 행동을 유발하게 된다. this라는 raw 포인터를 쓰기 때문에 smart pointer를 쓰더라도 여전히 문제가 될 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> FilterContainer = <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::function&lt;<span class="keyword">bool</span>(<span class="keyword">int</span>)&gt;&gt;;</div><div class="line"></div><div class="line">FilterContainer filters;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">doSomeWork</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">auto</span> pw = <span class="built_in">std</span>::make_unique&lt;Widget&gt;();</div><div class="line"></div><div class="line">    pw-&gt;addFilter();</div><div class="line"></div><div class="line">    ... <span class="comment">//여기서 Widget이 파괴되는데 이제 filters에는 대상을 잃은 포인터가 존재하게 된다.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이 문제는 갈무리하려는 자료 멤버의 지역 복사본을 만들어서 그 복사본을 갈무리하면 해결된다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Widget::addFilter() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">auto</span> divisorCopy = divisor; <span class="comment">//자료 멤버를 복사한다.</span></div><div class="line"></div><div class="line">    filters.emplace_back(</div><div class="line">        [divisorCopy](<span class="keyword">int</span> value)&#123; <span class="keyword">return</span> value % divisorCopy == <span class="number">0</span>; &#125; <span class="comment">//복사본을 갈무리하고, 복사본을 사용한다.</span></div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이 접근방식을 활욯아면 기본 값 갈무리 모드도 잘 작동한다.<br>하지만 C++14에는 더 나은 방법이 있는데 이는 바로 일반화된 람다 갈무리를 사용하는 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Widget::addFilter() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    filters.emplace_back(</div><div class="line">        [divisor = divisor](<span class="keyword">int</span>  value) <span class="comment">//c++14에서 divisor를 클로저에 복사한다.</span></div><div class="line">        &#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125; <span class="comment">//복사본을 사용한다.</span></div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>그런데 일반화된 람다 갈무리에는 기본 갈무리 모드라는 것이 없으므로 C++14에서도 기ㅣ본 갈무리 모드를 피하라는 이 항목의 조언은 유효하다.<br>그런데 값에 의한 기본 갈무리 모드의 단점은 클로저 바깥에서 일어나는 자료의 변화로부터 격리되어 있다는 오해를 불러일으킨다는 것이다. 하지만 실은 오해일 뿐이다. 왜냐하면 람다가 지역 변수와 매개변수(갈무리가 가능한) 뿐만 아니라 정적 저장소 수명 기간을 가진 객체에도 의존할 수 있기 때문이다.<br>전역범위나 이름 공간 범위에서 정의된 객체와 클래스, 함수, 파일 안에서 static으로 선언된 객체가 그런 것들이다. 그런 객체를 람다안에서 사용할 수는 있지만, 갈무리할 수는 없다. 그러나 기본 값 갈무리 모드의 표기는 마치 그런객체도 모두 갈무리된다는 느낌을 준다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addDivisorFilter</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">auto</span> calc1 = computeSomeValue1(); <span class="comment">// 정적 변수</span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">auto</span> calc2 = computeSomeValue2(); <span class="comment">// 정적 변수</span></div><div class="line"></div><div class="line">    <span class="keyword">static</span> <span class="keyword">auto</span> divisor =  <span class="comment">//정적 변수</span></div><div class="line">        computeDivisor(calc1, calc2);</div><div class="line"></div><div class="line">    filters.emplace_back(</div><div class="line">        [=](<span class="keyword">int</span> value) <span class="comment">//아무 것도 갈무리하지 않음</span></div><div class="line">        &#123; <span class="keyword">return</span> value % divisor == <span class="number">0</span>; &#125; <span class="comment">//위의 정적변수 divisor를 지칭함.</span></div><div class="line">    );</div><div class="line"></div><div class="line">    ++divisor; <span class="comment">//divisor를 수정</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>무심코 위의 람다가 “[=]”를 보고 “이 람다는 자신이 사용하는 모든 객체의 복사본을 만든다.”라고 오해하면 안된다.<br>이 람다는 그 어떤 비정적 지역 변수도 사용하지 않으므로, 아무것도 갈무리 하지 않는다. 따라서 divisor는 매번 증가하게 되어 의도치 않은 결과를 낳게된다.<br>값에의한 복사처럼 보이지만 실상은 참조로 갈무리한 것과 같은 것이다. 따라서 애초에 기본 값 갈무리 모드를 사용하지 않는다면 이처럼 오해의 여지가 큰 코드를 만들지 않게되어 좋다.</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>기본 참조 갈무리는 참조가 대상을 잃을 위험이 있다.</li>
+<li>기본 값 갈무리는 포인터가 대상을 잃을 수 있으며, 람다가 자기 완결적이라는 오해를 부를 수 있다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://LeeInJae.github.io/2017/10/23/EMC-31-1/" data-id="cj92xpfo30007csvilenr8biv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/LeeInJae" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/10/23/EMC-31/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">lambda expression</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/23/EMC-31-1/" class="title">EMC_31. 기본 갈무리 모드를 피하라</a></p>
+                            <p class="item-date"><time datetime="2017-10-22T15:12:33.000Z" itemprop="datePublished">2017-10-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/23/EMC-31/" class="title">lambda expression</a></p>
+                            <p class="item-date"><time datetime="2017-10-22T15:01:07.000Z" itemprop="datePublished">2017-10-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/20/EMC-30/" class="title">EMC_30. 완벽 전달이 실패하는 경우들을 잘 알아두라.</a></p>
+                            <p class="item-date"><time datetime="2017-10-19T15:26:07.000Z" itemprop="datePublished">2017-10-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/19/EMC-29/" class="title">EMC_Chapter29.이동 의미론에 대해 제대로 알아야 할 것들</a></p>
+                            <p class="item-date"><time datetime="2017-10-18T17:42:47.000Z" itemprop="datePublished">2017-10-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/19/EMC-28/" class="title">chapter28. 참조 축약을 숙지하라.</a></p>
+                            <p class="item-date"><time datetime="2017-10-18T16:31:30.000Z" itemprop="datePublished">2017-10-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">7</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">7</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">6</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/EMC/" style="font-size: 10px;">EMC</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/std-forward/" style="font-size: 10px;">std::forward</a> <a href="/tags/std-move/" style="font-size: 10px;">std::move</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/LeeInJae">Git</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 cowspirit</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://LeeInJae.github.io/2017/10/23/EMC-31-1/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
