@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8">
     
-    <title>EMC_Chapter29.이동 의미론에 대해 제대로 알아야 할 것들 | 프로그래밍 안녕</title>
+    <title>EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라 | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="c++,EMC,std::move,std::forward" />
+        <meta name="keywords" content="c++,EMC,std::move,lambda" />
     
-    <meta name="description" content="이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다. 우선 이동 의미론을 지원하">
-<meta name="keywords" content="c++,EMC,std::move,std::forward">
+    <meta name="description" content="앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는">
+<meta name="keywords" content="c++,EMC,std::move,lambda">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EMC_Chapter29.이동 의미론에 대해 제대로 알아야 할 것들">
-<meta property="og:url" content="https://LeeInJae.github.io/2017/10/19/EMC-29/index.html">
+<meta property="og:title" content="EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/10/25/EMC-32/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
-<meta property="og:description" content="이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다. 우선 이동 의미론을 지원하">
-<meta property="og:updated_time" content="2017-10-19T09:41:33.487Z">
+<meta property="og:description" content="앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는">
+<meta property="og:updated_time" content="2017-10-24T17:34:14.164Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="EMC_Chapter29.이동 의미론에 대해 제대로 알아야 할 것들">
-<meta name="twitter:description" content="이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다. 우선 이동 의미론을 지원하">
+<meta name="twitter:title" content="EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라">
+<meta name="twitter:description" content="앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는">
     
 
     
@@ -137,14 +137,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-EMC-29" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-EMC-32" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        EMC_Chapter29.이동 의미론에 대해 제대로 알아야 할 것들
+        EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라
         </h1>
     
 
@@ -154,43 +154,49 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2017/10/19/EMC-29/" class="article-date">
-            <time datetime="2017-10-18T17:42:47.000Z" itemprop="datePublished">2017-10-19</time>
+        <a href="/2017/10/25/EMC-32/" class="article-date">
+            <time datetime="2017-10-24T16:57:25.000Z" itemprop="datePublished">2017-10-25</time>
         </a>
     </div>
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/lambda/">lambda</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="이동-의미론"><a href="#이동-의미론" class="headerlink" title="이동 의미론"></a>이동 의미론</h3><p>C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.<br>예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.<br>그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다.</p>
-<p>우선 이동 의미론을 지원하지 않는 형식들이 많다라는 점이다. C++11에선 C++98에서 이동을 복사보다 빠르게 구현할 수 있는 형식들에 대해서 이동 연산들을 추가했다.<br>그런디 이동 연산을 명시적으로 지원하지는 않는 형식에 대해 C++11이 자동으로 이동 연산들을 작성해 주긴 하지만 형식에</p>
+            <p>앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)<br>결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는…)<br>하지만 C++14에는 있다.</p>
+<h3 id="초기화-갈무리"><a href="#초기화-갈무리" class="headerlink" title="초기화 갈무리"></a>초기화 갈무리</h3><p>이동 갈무리는 없다(기본갈무리는 값 갈무리, 참조 갈무리이다). 그런데 이동 갈무리에 대한 문제를 해결할 수 있도록 표준 위원회가 마련했다. 그것이 초기화 갈무리이다. 초기화 갈무리로는 C++11의 모든 갈무리 모드들이 할 수 있는 모든 것을 할 수 있다.(다만 기본 갈무리 모드는 표현할 수 없는데, 이는 EMC_31에서 피해야한다고 설명한다)<br>초기화 갈무리를 사용하면 다음과 같은 것들을 지정할 수 있다.</p>
 <ul>
-<li>복사 연산</li>
-<li>이동 연산</li>
-<li>소멸자<br>위의 3개중 하나라도 있으면 그러한 자동 작성은 일어나지 않는다. 다시말해 저 3개를 다 안만들어야만 자동으로 만들어준다.<br>이러한 경우 자동으로 이동 연산이 만들어지지 않았을때 이동은 복사연산으로 대체되어 원하는 성능의 효과를 가져올 수 없다.<br>또한 명시적으로 정의 되었다하더라도, 컨테이너에 담긴 내용을 정말로 저렴하게 이동하는 방법이 없는 컨테이너들도 있고,<br>컨테이너가 제공하는 진정으로 저렴한 이동 연산이 요구하는 까다로운 조건을 컨테이너 요소들이 만족할 수 없는 경우도 있기 때문이다.</li>
+<li>람다로부터 생성되는 클로저 클래스에 속한 자료 멤버의 이름</li>
+<li>그 자료 멤버를 초기화하는 표현식</li>
 </ul>
-<h3 id="std-vector"><a href="#std-vector" class="headerlink" title="std::vector"></a>std::vector</h3><p>vector 같은 경우는 성능상의 이점을 이동을 통해 이룰 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Widget&gt; vw1;</div><div class="line"></div><div class="line"><span class="comment">//vw1을 vw2로 이동. 이 이동은 상수시간이 실행.</span></div><div class="line"><span class="comment">//오직 vw1과 vw2의 포인터들만 수정</span></div><div class="line"><span class="keyword">auto</span> vw2 = <span class="built_in">std</span>::move(vw1);</div></pre></td></tr></table></figure></p>
-<p>즉 원본 컨테이너의 내용을 가리키는 포인터를 대상 컨테이너로 복사하고 원본 컨테이너의 포인터를 널로 설정하는 것이다.</p>
-<h3 id="std-array"><a href="#std-array" class="headerlink" title="std::array"></a>std::array</h3><p>이번에는 std::array를 살펴보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;Widget, 10000&gt; aw1; <span class="comment">//aw1에 자료 채움</span></div><div class="line"></div><div class="line"><span class="comment">//aw1을 aw2로 이동</span></div><div class="line"><span class="comment">//이 이동은 선형시간</span></div><div class="line"><span class="comment">//모든 원소가 aw2로 이동된다.</span></div><div class="line"><span class="keyword">auto</span> aw2 = <span class="built_in">std</span>::move(aw1);</div></pre></td></tr></table></figure></p>
-<p>std::array 객체에는 포인터가 없고, std::array 객체 자체에 원소들이 저장된다.<br>std::vector 와의 차이점은 aw1의 각 원소가 aw2로 이동된다는 것이고, 이는 원본과 대상의 포인터만 교체하는 거에비해 비싸다.<br>하지만 std::array를 복사하는 것보다는 빠르다고 할 수 있다.</p>
-<h3 id="std-string"><a href="#std-string" class="headerlink" title="std::string"></a>std::string</h3><p>std::string은 상수 시간 이동과 선형 시간 복사를 제공한다. 이점만 봤을때는 이동이 복사보다 빠를 것 같지만 반드시 그렇지는 않을 수 있다.<br>문자열 구현 중에는 작은 문자열 최적화(small string optimization, SSO)를 사용하는 것들이 많다. 이런 구현은 ‘작은’문자열(용량이 15이하)을 std::string 객체 안의 버퍼에 저장하고, 힙에 할당한 저장소는 사용하지 않는다.<br>이러한 SSO 기반 구현을 사용한다면 작은 문자열의 이동은 복사보다 빠르지 않다. 대체로 이동이 복사보다 빠른 것은 포인터 하나만 복사하면 되기 때문인데 이러한 경우는 그렇게 적용할 수 없기 때문이다.<br>즉, 아주 긴 문자열을 사용하지 않는 이상 move의 이점을 얻기란 어렵다.</p>
-<p>또한 확실히 move가 일어날 상황임에도 불구하고 copy가 일어나는 경우가 있다. 결론적으로 move연산이 일어나려면 move 연산이 어떠한 예외도 던지지 않아야한다.<br>바꿔말해 move가 noexcept로 선언되어 있지 않으면 컴파일러는 복사를 실행할 수도 있다는 얘기다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidated</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isProcessed</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isArchived</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> pw = <span class="built_in">std</span>::make_unique&lt;Widget&gt;(); <span class="comment">//Widget을 생성한다.</span></div><div class="line"></div><div class="line"><span class="comment">//클로저의 자료 멤버를 std::move(pw)로 초기화 한다.</span></div><div class="line"><span class="keyword">auto</span> func = [pw = <span class="built_in">std</span>::move(pw)]</div><div class="line">            &#123; <span class="keyword">return</span> pw-&gt;isValidated()</div><div class="line">                     &amp;&amp; pw-&gt;isArchived(); &#125;;</div></pre></td></tr></table></figure>
+<p>여기서 클로저의 의 좌변가 우변의 구분이 필요하다. “=”의 좌변은 클로저 클래스 안의 자료 멤버(클로저에서 사용할)의 이름이고, 우변은 그것을 초기화하는 표현식이다.<br>좌변의 범위는 해당 클로저의 클래스의 범위이고, 우변의 범위는 람다가 정의되는 지점의 범위와 동일하다.<br>그리고 클로저안의 pw는 해당 클로저의 멤버변수에 해당한다. 이렇게 어떤 표현식의 결과를 갈무리하는 것을 일반화된 람다 갈무리라고 부르기도 한다.</p>
+<h3 id="C-11에서는-어떻게-해야할까"><a href="#C-11에서는-어떻게-해야할까" class="headerlink" title="C++11에서는 어떻게 해야할까"></a>C++11에서는 어떻게 해야할까</h3><p>먼저 직접 함수객체를 구현하는 방법이 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">IsValAndArch</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">using</span> DataType = sstd::<span class="built_in">unique_ptr</span>&lt;Widget&gt;;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">IsValAndArch</span><span class="params">(DataType&amp;&amp; ptr)</span></span></div><div class="line">    : pw(std::move(ptr))&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> pw-&gt;isValidated() &amp;&amp; pw-&gt;isArchived(); &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    DataType pw;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> func = IsValAndArch(<span class="built_in">std</span>::make_unique&lt;Widget&gt;());</div></pre></td></tr></table></figure></p>
+<h3 id="std-bind-활용"><a href="#std-bind-활용" class="headerlink" title="std::bind 활용"></a>std::bind 활용</h3><p>그런데 직접 함수 객체를 만들면 번거롭기는 하다. 따라서 람다를 고집하는 경우가 많은데 이때 std::bind를 같이 활용하면 이동 갈무리가 가능하다.</p>
 <ul>
-<li>이동 연산이 없다: 이동할 객체가 이동 연산을 제공하지 않음(복사로 처리)</li>
-<li>이동이 더 빠르지 않다(복사보다) : 내부적인 구조에 의해 이동할 객체의 이동 연산이 복사보다 빠르지 않음</li>
-<li>이동을 사용할 수 없다: noexcept로 선언되어 있지 않을때는 복사를 수행할 수 있다.</li>
+<li>갈무리할 객체를 std::bind가 산출하는 함수 객체로 이동하고,</li>
+<li>그 갈무리된 객체에 대한 참조를 람다에 넘겨준다.</li>
 </ul>
-<p>한가지더 원본 객체가 왼값 : 아주 드문경우지만 오직 오른값만 이동 연산의 원본이 될 수 있는 경우<br>까지 총 4가지 상황에서는 이동 연산이 복사보다 더 빠르지 않는 경우이다.<br>주의해야할 곳은 대부분 template 함수를 만들때일 것이다. 실제 적용될 타입이 무엇인지 모르기 때문에 move에 대한 성능을 확신할수 없는 것이다.<br>반면 정확하게 move연산이 있고 복사보다 이득을 볼 수 있는 상황이라면 믿고 move를 쓰는것이 성능 향상에 도움을 줄 것이다.</p>
+<p>자 그럼 std::vector를 생성해서 거기에 적절한 값들을 추가한 후 클로저 안으로 이동한다고 해보자. C++ 14에서는 쉽다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; data; <span class="comment">//클로저 안으로 이동할 객체</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> func = [data = <span class="built_in">std</span>::move(data)] <span class="comment">//C++14의 초기화 갈무리</span></div><div class="line">            &#123;<span class="comment">/*여기서 데이터 사용*/</span>&#125;;</div></pre></td></tr></table></figure></p>
+<p>c++11에서는 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; data;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> func =</div><div class="line">    <span class="built_in">std</span>::bind(</div><div class="line">        [](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&amp; data)</div><div class="line">        &#123;<span class="comment">/*여기서 데이터 사용*/</span>&#125;, </div><div class="line">        <span class="built_in">std</span>::move(data)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>람다 표현식처럼 std::bind는 함수 객체를 산출한다. std::bind가 돌려주는 객체를 바인드 객체라고 한다.<br>std::bind의 첫번째 인자는 호출 가능한 오브젝트이고, 그 뒤에 오는 인자들은 그 객체에 전달할 값들을 나타낸다.<br>바인드 객체는 std::bind에 전달된 모든 인수와 복사본을 포함한다. 각각의 왼값 인수에 대해 바인드 객체에는 그에 해당하는 복사 생성된 객체가 있다.<br>각각의 오른값에 대해서는 이동 생성된 객체가 있다. 위에서 std::move(data)를 하였으므로 여기서는 바인드 객체가 data값을 이동시켜 들고있게 된다. 이떄 이 이동 생성이 바로 이동 객체 흉내의 핵심이다.<br>즉 오른값을 바인드 객체 안으로 이동함으로써 오른값의 이동이 불가능하다는 C++11 클로저의 한개를 우회한다.<br>std::bind에서 인자로 넘겼던 이들을 그대로 인자로 해서 std::bind에 첫번째 인자를 호출하는데 위에서는 func가 호출이 되고, func의 인자로 std::move(data) 이 인자로 넘어간다.<br>그리고 기본적으로 람다로부터 만들어진 클로저 클래스의 operator() 멤버 함수는 const이다. 이때문에 람다 본문 안에서 클로저의 모든 자료 멤버는 const이다. 그런데 바인드 객체 안의 이동 생성된 data 복사본은 const가 아니다. 람다 안에서 data 복사본이 수정되지 않게 하려면 람다의 매개변수를 const에 대한 찾모로 선언해야한다.<br>만약에 변이 가능한 람다를 사용한다면(즉 람다를 mutable 선언) 해당 클래스의 operator()는 const로 선언되지 않을 것이므로 람다 매개변수 선언에서도 const를 제거해야 한다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> func =</div><div class="line">    <span class="built_in">std</span>::bind(</div><div class="line">        [](<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&amp; data) <span class="keyword">mutable</span></div><div class="line">        &#123; &#125;, <span class="built_in">std</span>::move(data));</div></pre></td></tr></table></figure></p>
+<p>바인드 객체는 std::bind에 전달된 모든 인수의 복사본을 저장하는데, std::bind의 첫 인수(람다가 산출한 클로저)의 복사본도 저장한다. 따라서 그 클로저의 수명은 바인드 객체의 수명과 같다. 클로저가 존재하는한 이동 갈무리를 흉내내는 객체를 담은 바인드 객체도 존재함을 뜻한다.</p>
+<ul>
+<li>객체를 C++11 클로저 안으로 이동 생성하는 것은 불가능하나 객체를 C++11 바인드 객체 안으로 이동생성하는 것은 가능</li>
+<li>C++11에서 이동 갈무리를 흉내 내는 방법은, 객체를 바인드 객체 안으로 이동 생성하고, 이동 생성된 객체를 람다에 참조로 전달하는 것.</li>
+<li>바인드 객체의 수명이 클로저의 수명과 같으므로 바인드 객체 안의 객체들을 마치 클로저 안에 있는 것처럼 취급하는것이 가능</li>
+</ul>
+<p>또다른 예를 하나 더 살펴보자. C++14의 클로저 안에서 std::unique_ptr을 생성하는 예이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//C++14</span></div><div class="line"><span class="keyword">auto</span> func = [pw = <span class="built_in">std</span>::make_unique&lt;Widget&gt;()]</div><div class="line">            &#123; <span class="keyword">return</span> pw-&gt;isValidated()</div><div class="line">                     &amp;&amp; pw-&gt;isArchived(); &#125;;</div></pre></td></tr></table></figure></p>
+<p>이를 우회하는 방법은 다음과 같다<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//C++11</span></div><div class="line"><span class="keyword">auto</span> func = <span class="built_in">std</span>::bind(</div><div class="line">              [](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt;&amp; pw)</div><div class="line">              &#123;<span class="keyword">return</span> pw-&gt;isValidated()</div><div class="line">                      &amp;&amp; pw-&gt;isArchived(); &#125;,</div><div class="line">              <span class="built_in">std</span>::make_unique&lt;Widget&gt;());</div></pre></td></tr></table></figure></p>
 <h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
-<li>이동 연산들이 존재하지 않고, 저렴하지 않고, 적용되지 않을 상황에 대해 알고있어야함</li>
-<li>형식들과 이동 의미론 지원 여부를 미리 알 수 있는 경우에는 move 가 성능 향상을 가져올 것이라고 확신하고 써도 됨.</li>
+<li>객체를 클로저 안으로 이동할 때에는 C++14의 초기화 갈무리를 사용</li>
+<li>C++11에서는 직접 작성한 클래스나 std::bind로 초기화 갈무리를 흉내낼 수 있음</li>
 </ul>
 
         </div>
@@ -199,7 +205,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/10/19/EMC-29/" data-id="cj95w4vbu0002swviobvvuaj5" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/10/25/EMC-32/" data-id="cj95w4vc30005swvi0tmkf8xn" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -336,20 +342,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/10/20/EMC-30/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">més nou</strong>
-        <p class="article-nav-title">
-        
-            EMC_30. 완벽 전달이 실패하는 경우들을 잘 알아두라.
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2017/10/19/EMC-28/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/10/23/EMC-31-1/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">antic</strong>
-        <p class="article-nav-title">chapter28. 참조 축약을 숙지하라.</p>
+        <p class="article-nav-title">EMC_31. 기본 갈무리 모드를 피하라</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -501,7 +497,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'https://LeeInJae.github.io/2017/10/19/EMC-29/';
+    var disqus_url = 'https://LeeInJae.github.io/2017/10/25/EMC-32/';
     
     (function() {
     var dsq = document.createElement('script');
