@@ -16,7 +16,7 @@
 <meta property="og:url" content="https://LeeInJae.github.io/2017/11/01/EMC-33/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
 <meta property="og:description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
-<meta property="og:updated_time" content="2017-10-31T16:42:54.686Z">
+<meta property="og:updated_time" content="2017-10-31T16:44:14.752Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라">
 <meta name="twitter:description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
@@ -84,7 +84,7 @@
                             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Cercar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -105,8 +105,8 @@
         TRANSLATION: {
             POSTS: 'Posts',
             PAGES: 'Pages',
-            CATEGORIES: 'categories',
-            TAGS: 'etiquetes',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -169,7 +169,7 @@
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="일반적-람다-generic-lambdas"><a href="#일반적-람다-generic-lambdas" class="headerlink" title="일반적 람다(generic lambdas)"></a>일반적 람다(generic lambdas)</h3><p>C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.<br>예를들어 다음과 같은 람다가 있다고 해보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span> x)&#123; <span class="keyword">return</span> func(normalize(x)); &#125;;</div></pre></td></tr></table></figure></p>
+            <h3 id="일반적-람다-generic-lambdas"><a href="#일반적-람다-generic-lambdas" class="headerlink" title="일반적 람다(generic lambdas)"></a>일반적 람다(generic lambdas)</h3><p>C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.<br>예를들어 다음과 같은 람다가 있다고 해보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span> x)&#123; <span class="keyword">return</span> normalize(xㄴ); &#125;;</div></pre></td></tr></table></figure></p>
 <p>위의 람다가 산출하는 클로저 클래스의 함수 호출 연산자는 다음과 같은 모습이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> 컴파일러가_만든_어떤_클래스_이름</span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T x)</span> <span class="keyword">const</span></span></div><div class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> normalize(x); &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>이 예제에서 람다는 매개변수 x를 normalize함수로 전달한다. 역시 전달은 perfect하게 이루어져야하므로 왼값과 오른값에 대해서 다른 방식으로 처리되게 하면 안된다. 그런데 위에서 x는 항상 왼값이고, normalize에는 왼값만 넘어가게된다. 즉 x에 오른값을 넘겼으면 normalize에는 오른값이 넘어가야한다.<br>따라서 완벽전달을 해야하기때문에 수정을 해야 한다.</p>
 <ul>
@@ -195,7 +195,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/11/01/EMC-33/" data-id="cj9fudzap000l68viq56ead5w" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/11/01/EMC-33/" data-id="cj9fudzap000l68viq56ead5w" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -275,7 +275,7 @@
                     <aside id="sidebar">
     <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
     <div class="sidebar-top">
-        <p>seguir:</p>
+        <p>follow:</p>
         <ul class="social-links">
             
                 
@@ -334,7 +334,7 @@
     
     
         <a href="/2017/10/25/EMC-32/" id="article-nav-older" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">antic</strong>
+        <strong class="article-nav-caption">older</strong>
         <p class="article-nav-title">EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
@@ -413,7 +413,7 @@
             
                 
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">arxius</h3>
+        <h3 class="widget-title">archives</h3>
         <div class="widget">
             <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li></ul>
         </div>
@@ -423,7 +423,7 @@
             
                 
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">etiquetes</h3>
+        <h3 class="widget-title">tags</h3>
         <div class="widget">
             <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/universal-reference/">universal reference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/보편참조/">보편참조</a><span class="tag-list-count">1</span></li></ul>
         </div>
@@ -433,7 +433,7 @@
             
                 
     <div class="widget-wrap widget-float">
-        <h3 class="widget-title">etiqueta cloud</h3>
+        <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
             <a href="/tags/EMC/" style="font-size: 20px;">EMC</a> <a href="/tags/c/" style="font-size: 20px;">c++</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/std-forward/" style="font-size: 13.33px;">std::forward</a> <a href="/tags/std-move/" style="font-size: 16.67px;">std::move</a> <a href="/tags/universal-reference/" style="font-size: 10px;">universal reference</a> <a href="/tags/보편참조/" style="font-size: 10px;">보편참조</a>
         </div>
