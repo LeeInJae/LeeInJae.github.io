@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8">
     
-    <title>EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라 | 프로그래밍 안녕</title>
+    <title>EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라 | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="c++,EMC,std::move,lambda" />
+        <meta name="keywords" content="c++,EMC,std::move,std::forward" />
     
-    <meta name="description" content="앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는">
-<meta name="keywords" content="c++,EMC,std::move,lambda">
+    <meta name="description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
+<meta name="keywords" content="c++,EMC,std::move,std::forward">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라">
-<meta property="og:url" content="https://LeeInJae.github.io/2017/10/25/EMC-32/index.html">
+<meta property="og:title" content="EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/11/01/EMC-33/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
-<meta property="og:description" content="앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는">
-<meta property="og:updated_time" content="2017-10-24T17:37:53.013Z">
+<meta property="og:description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
+<meta property="og:updated_time" content="2017-10-31T16:42:54.686Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라">
-<meta name="twitter:description" content="앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는">
+<meta name="twitter:title" content="EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라">
+<meta name="twitter:description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
     
 
     
@@ -137,14 +137,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-EMC-32" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-EMC-33" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라
+        EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라
         </h1>
     
 
@@ -154,50 +154,40 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2017/10/25/EMC-32/" class="article-date">
-            <time datetime="2017-10-24T16:57:25.000Z" itemprop="datePublished">2017-10-25</time>
+        <a href="/2017/11/01/EMC-33/" class="article-date">
+            <time datetime="2017-10-31T16:22:30.000Z" itemprop="datePublished">2017-11-01</time>
         </a>
     </div>
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/lambda/">lambda</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <p>앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)<br>결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는…)<br>하지만 C++14에는 있다.</p>
-<h3 id="초기화-갈무리"><a href="#초기화-갈무리" class="headerlink" title="초기화 갈무리"></a>초기화 갈무리</h3><p>이동 갈무리는 없다(기본갈무리는 값 갈무리, 참조 갈무리이다). 그런데 이동 갈무리에 대한 문제를 해결할 수 있도록 표준 위원회가 마련했다. 그것이 초기화 갈무리이다. 초기화 갈무리로는 C++11의 모든 갈무리 모드들이 할 수 있는 모든 것을 할 수 있다.(다만 기본 갈무리 모드는 표현할 수 없는데, 이는 EMC_31에서 피해야한다고 설명한다)<br>초기화 갈무리를 사용하면 다음과 같은 것들을 지정할 수 있다.</p>
+            <h3 id="일반적-람다-generic-lambdas"><a href="#일반적-람다-generic-lambdas" class="headerlink" title="일반적 람다(generic lambdas)"></a>일반적 람다(generic lambdas)</h3><p>C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.<br>예를들어 다음과 같은 람다가 있다고 해보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span> x)&#123; <span class="keyword">return</span> func(normalize(x)); &#125;;</div></pre></td></tr></table></figure></p>
+<p>위의 람다가 산출하는 클로저 클래스의 함수 호출 연산자는 다음과 같은 모습이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> 컴파일러가_만든_어떤_클래스_이름</span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T x)</span> <span class="keyword">const</span></span></div><div class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> normalize(x); &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이 예제에서 람다는 매개변수 x를 normalize함수로 전달한다. 역시 전달은 perfect하게 이루어져야하므로 왼값과 오른값에 대해서 다른 방식으로 처리되게 하면 안된다. 그런데 위에서 x는 항상 왼값이고, normalize에는 왼값만 넘어가게된다. 즉 x에 오른값을 넘겼으면 normalize에는 오른값이 넘어가야한다.<br>따라서 완벽전달을 해야하기때문에 수정을 해야 한다.</p>
 <ul>
-<li>람다로부터 생성되는 클로저 클래스에 속한 자료 멤버의 이름</li>
-<li>그 자료 멤버를 초기화하는 표현식</li>
+<li>매개변수 x는 보편참조여야 한다</li>
+<li>std::forward를 통해서 normalize에 완벽 전달을 한다</li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidated</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isProcessed</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isArchived</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> pw = <span class="built_in">std</span>::make_unique&lt;Widget&gt;(); <span class="comment">//Widget을 생성한다.</span></div><div class="line"></div><div class="line"><span class="comment">//클로저의 자료 멤버를 std::move(pw)로 초기화 한다.</span></div><div class="line"><span class="keyword">auto</span> func = [pw = <span class="built_in">std</span>::move(pw)]</div><div class="line">            &#123; <span class="keyword">return</span> pw-&gt;isValidated()</div><div class="line">                     &amp;&amp; pw-&gt;isArchived(); &#125;;</div></pre></td></tr></table></figure>
-<p>여기서 클로저의 의 좌변가 우변의 구분이 필요하다. “=”의 좌변은 클로저 클래스 안의 자료 멤버(클로저에서 사용할)의 이름이고, 우변은 그것을 초기화하는 표현식이다.<br>좌변의 범위는 해당 클로저의 클래스의 범위이고, 우변의 범위는 람다가 정의되는 지점의 범위와 동일하다.<br>그리고 클로저안의 pw는 해당 클로저의 멤버변수에 해당한다. 이렇게 어떤 표현식의 결과를 갈무리하는 것을 일반화된 람다 갈무리라고 부르기도 한다.</p>
-<h3 id="C-11에서는-어떻게-해야할까"><a href="#C-11에서는-어떻게-해야할까" class="headerlink" title="C++11에서는 어떻게 해야할까"></a>C++11에서는 어떻게 해야할까</h3><p>먼저 직접 함수객체를 구현하는 방법이 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">IsValAndArch</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">using</span> DataType = sstd::<span class="built_in">unique_ptr</span>&lt;Widget&gt;;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">IsValAndArch</span><span class="params">(DataType&amp;&amp; ptr)</span></span></div><div class="line">    : pw(std::move(ptr))&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> pw-&gt;isValidated() &amp;&amp; pw-&gt;isArchived(); &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    DataType pw;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> func = IsValAndArch(<span class="built_in">std</span>::make_unique&lt;Widget&gt;());</div></pre></td></tr></table></figure></p>
-<h3 id="std-bind-활용"><a href="#std-bind-활용" class="headerlink" title="std::bind 활용"></a>std::bind 활용</h3><p>그런데 직접 함수 객체를 만들면 번거롭기는 하다. 따라서 람다를 고집하는 경우가 많은데 이때 std::bind를 같이 활용하면 이동 갈무리가 가능하다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span>&amp;&amp; x)</div><div class="line">         &#123; <span class="keyword">return</span> normalize(<span class="built_in">std</span>::forward&lt;???&gt;(x)); &#125;;</div></pre></td></tr></table></figure>
+<p>그런데 std::forward&lt;???&gt;에서 ???에 무엇을 대체 써주어야하는 것일까? 보통 템플릿에서는 typename T에서 T를 넘겼지만 auto로 보편참조 선언이 되어있기때문에 타입을 지정할 수 없다. 어떻게 해야할까?<br>이경우 항목3에서 배웠던 decltype을 쓰면된다. decltype(x)를 쓰면 x의 타입을 얻을수 있기 때문이다. 그럼 2가지 경우로 나누어서 생각해보자</p>
 <ul>
-<li>갈무리할 객체를 std::bind가 산출하는 함수 객체로 이동하고,</li>
-<li>그 갈무리된 객체에 대한 참조를 람다에 넘겨준다.</li>
+<li>x에 왼값이 전달 되었을때</li>
+<li>x에 오른값이 전달 되었을때</li>
 </ul>
-<p>자 그럼 std::vector를 생성해서 거기에 적절한 값들을 추가한 후 클로저 안으로 이동한다고 해보자. C++ 14에서는 쉽다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; data; <span class="comment">//클로저 안으로 이동할 객체</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> func = [data = <span class="built_in">std</span>::move(data)] <span class="comment">//C++14의 초기화 갈무리</span></div><div class="line">            &#123;<span class="comment">/*여기서 데이터 사용*/</span>&#125;;</div></pre></td></tr></table></figure></p>
-<p>c++11에서는 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; data;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> func =</div><div class="line">    <span class="built_in">std</span>::bind(</div><div class="line">        [](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&amp; data)</div><div class="line">        &#123;<span class="comment">/*여기서 데이터 사용*/</span>&#125;, </div><div class="line">        <span class="built_in">std</span>::move(data)</div><div class="line">);</div></pre></td></tr></table></figure></p>
-<p>람다 표현식처럼 std::bind는 함수 객체를 산출한다. std::bind가 돌려주는 객체를 바인드 객체라고 한다.<br>std::bind의 첫번째 인자는 호출 가능한 오브젝트이고, 그 뒤에 오는 인자들은 그 객체에 전달할 값들을 나타낸다.<br>바인드 객체는 std::bind에 전달된 모든 인수와 복사본을 포함한다. 각각의 왼값 인수에 대해 바인드 객체에는 그에 해당하는 복사 생성된 객체가 있다.<br>각각의 오른값에 대해서는 이동 생성된 객체가 있다. 위에서 std::move(data)를 하였으므로 여기서는 바인드 객체가 data값을 이동시켜 들고있게 된다. 이때 이 이동 생성이 바로 이동 객체 흉내의 핵심이다.<br>즉 오른값을 바인드 객체 안으로 이동함으로써 오른값의 이동이 불가능하다는 C++11 클로저의 한개를 우회한다.<br>std::bind에서 인자로 넘겼던 이들을 그대로 인자로 해서 std::bind에 첫번째 인자를 호출하는데 위에서는 func가 호출이 되고, func의 인자로 std::move(data) 이 인자로 넘어간다.<br>그리고 기본적으로 람다로부터 만들어진 클로저 클래스의 operator() 멤버 함수는 const이다. 이때문에 람다 본문 안에서 클로저의 모든 자료 멤버는 const이다. 그런데 바인드 객체 안의 이동 생성된 data 복사본은 const가 아니다. 람다 안에서 data 복사본이 수정되지 않게 하려면 람다의 매개변수를 const에 대한 참조로 선언해야한다.<br>만약에 변이 가능한 람다를 사용한다면(즉 람다를 mutable 선언) 해당 클래스의 operator()는 const로 선언되지 않을 것이므로 람다 매개변수 선언에서도 const를 제거해야 한다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> func =</div><div class="line">    <span class="built_in">std</span>::bind(</div><div class="line">        [](<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&amp; data) <span class="keyword">mutable</span></div><div class="line">        &#123; &#125;, <span class="built_in">std</span>::move(data));</div></pre></td></tr></table></figure></p>
-<p>바인드 객체는 std::bind에 전달된 모든 인수의 복사본을 저장하는데, std::bind의 첫 인수(람다가 산출한 클로저)의 복사본도 저장한다. 따라서 그 클로저의 수명은 바인드 객체의 수명과 같다. 클로저가 존재하는한 이동 갈무리를 흉내내는 객체를 담은 바인드 객체도 존재함을 뜻한다.</p>
-<ul>
-<li>객체를 C++11 클로저 안으로 이동 생성하는 것은 불가능하나 객체를 C++11 바인드 객체 안으로 이동생성하는 것은 가능</li>
-<li>C++11에서 이동 갈무리를 흉내 내는 방법은, 객체를 바인드 객체 안으로 이동 생성하고, 이동 생성된 객체를 람다에 참조로 전달하는 것.</li>
-<li>바인드 객체의 수명이 클로저의 수명과 같으므로 바인드 객체 안의 객체들을 마치 클로저 안에 있는 것처럼 취급하는것이 가능</li>
-</ul>
-<p>또다른 예를 하나 더 살펴보자. C++14의 클로저 안에서 std::unique_ptr을 생성하는 예이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//C++14</span></div><div class="line"><span class="keyword">auto</span> func = [pw = <span class="built_in">std</span>::make_unique&lt;Widget&gt;()]</div><div class="line">            &#123; <span class="keyword">return</span> pw-&gt;isValidated()</div><div class="line">                     &amp;&amp; pw-&gt;isArchived(); &#125;;</div></pre></td></tr></table></figure></p>
-<p>이를 우회하는 방법은 다음과 같다<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//C++11</span></div><div class="line"><span class="keyword">auto</span> func = <span class="built_in">std</span>::bind(</div><div class="line">              [](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt;&amp; pw)</div><div class="line">              &#123;<span class="keyword">return</span> pw-&gt;isValidated()</div><div class="line">                      &amp;&amp; pw-&gt;isArchived(); &#125;,</div><div class="line">              <span class="built_in">std</span>::make_unique&lt;Widget&gt;());</div></pre></td></tr></table></figure></p>
-<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
-<li>객체를 클로저 안으로 이동할 때에는 C++14의 초기화 갈무리를 사용</li>
-<li>C++11에서는 직접 작성한 클래스나 std::bind로 초기화 갈무리를 흉내낼 수 있음</li>
-</ul>
+<p>x에 왼값이 전달되었을때는 decltype(x)는 왼값 참조에 해당하는 형식을 산출하고, 오른값이 전달되었다면 decltype(x)는 오른값 참조 형식을 산출한다.<br>자 여기서 다시 std::forward의 구현을 살펴보자<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">T&amp;&amp; forward&lt;<span class="keyword">remove_reference_t</span>&lt;T&gt;&amp; param)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;T&amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>위의 std::forward에 Widget 형식의 오른값을 완벽하게 전달할 때 인스턴스화 되는 모습은 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp;&amp; &amp;&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&amp; &amp;&amp;&gt;(param); <span class="comment">//T가 Widget&amp;&amp;일 때의 std::forward의 인스턴스 결과(참조 축약 적용전)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>위에서 참조축약까지 적용(오른값 참조에 대한 오른값 참조는 단일한 오른값 참조로 축약)하면 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp;&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&amp;&gt;(param); <span class="comment">//참조 축약 적용</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>이는 처음에 std::forward가 Widget형식으로 인스턴스화 되었을때와 똑같은 결과다. 따라서 decltype을 적용하면 왼값, 오른값 매개변수에 대해서 완벽전달이 가능함을 알 수 있다.<br>이를 람다에 적용해보자<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span>&amp;&amp; x)</div><div class="line">      &#123;</div><div class="line">          <span class="keyword">return</span> normalize(<span class="built_in">std</span>::forward&lt;<span class="keyword">decltype</span>(x)&gt;(x)); <span class="comment">//decltype을 톻안 완벽전달이 가능하다.</span></div><div class="line">      &#125;;</div></pre></td></tr></table></figure></p>
+<p>다음과 같이 마침표 세 개를 두 번 추가하면 매개변수 하나가 아니라 임의의 개수의 매개변수들을 받아서 완벽하게 전달하는 람다가 된다.(이는 C++14에서 람다가 가변 인수를 지원하기 때문이다)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span>&amp;&amp;... xs)</div><div class="line">      &#123;</div><div class="line">          <span class="keyword">return</span> normalize(<span class="built_in">std</span>::forward&lt;<span class="keyword">decltype</span>(xs)&gt;(xs)...);</div><div class="line">      &#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><p>std::forward를 통해서 전달 할 auto&amp;&amp; 매개변수에는 decltype을 사용하라.</p>
 
         </div>
         <footer class="article-footer">
@@ -205,7 +195,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/10/25/EMC-32/" data-id="cj9fudzaw000r68vi4gim5126" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/11/01/EMC-33/" data-id="cj9fudzap000l68viq56ead5w" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -342,20 +332,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/11/01/EMC-33/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">més nou</strong>
-        <p class="article-nav-title">
-        
-            EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2017/10/23/EMC-31-1/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/10/25/EMC-32/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">antic</strong>
-        <p class="article-nav-title">EMC_31. 기본 갈무리 모드를 피하라</p>
+        <p class="article-nav-title">EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -507,7 +487,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'https://LeeInJae.github.io/2017/10/25/EMC-32/';
+    var disqus_url = 'https://LeeInJae.github.io/2017/11/01/EMC-33/';
     
     (function() {
     var dsq = document.createElement('script');
