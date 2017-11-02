@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>EMC_34 | 프로그래밍 안녕</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="c++,EMC,std::move,std::forward" />
+    
+    <meta name="description" content="std::bind보다 람다c++11에서는 람다가 거의 항상 std::bind보다 나은 선택이다. 먼저 알아두어야할 것이 있는데 std::bind가 반환하는 객체를 bind객체라고 한다.그렇다면 왜 람다가 std::bind보다 좋은 것일까? 가독성첫째로는 가독성이다.123456789sing Time = std::chrono::steady_clock::time">
+<meta name="keywords" content="c++,EMC,std::move,std::forward">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EMC_34">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/11/03/EMC-34/index.html">
+<meta property="og:site_name" content="프로그래밍 안녕">
+<meta property="og:description" content="std::bind보다 람다c++11에서는 람다가 거의 항상 std::bind보다 나은 선택이다. 먼저 알아두어야할 것이 있는데 std::bind가 반환하는 객체를 bind객체라고 한다.그렇다면 왜 람다가 std::bind보다 좋은 것일까? 가독성첫째로는 가독성이다.123456789sing Time = std::chrono::steady_clock::time">
+<meta property="og:updated_time" content="2017-11-02T17:21:23.235Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EMC_34">
+<meta name="twitter:description" content="std::bind보다 람다c++11에서는 람다가 거의 항상 std::bind보다 나은 선택이다. 먼저 알아두어야할 것이 있는데 std::bind가 반환하는 객체를 bind객체라고 한다.그렇다면 왜 람다가 std::bind보다 좋은 것일까? 가독성첫째로는 가독성이다.123456789sing Time = std::chrono::steady_clock::time">
+    
+
+    
+        <link rel="alternate" href="/" title="프로그래밍 안녕" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">열심히하자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/source/index.html">about</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Entradas',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Programming/">Programming</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-EMC-34" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        EMC_34
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2017/11/03/EMC-34/" class="article-date">
+            <time datetime="2017-11-02T17:20:41.000Z" itemprop="datePublished">2017-11-03</time>
+        </a>
+    </div>
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="std-bind보다-람다"><a href="#std-bind보다-람다" class="headerlink" title="std::bind보다 람다"></a>std::bind보다 람다</h3><p>c++11에서는 람다가 거의 항상 std::bind보다 나은 선택이다. 먼저 알아두어야할 것이 있는데 std::bind가 반환하는 객체를 bind객체라고 한다.<br>그렇다면 왜 람다가 std::bind보다 좋은 것일까?</p>
+<h3 id="가독성"><a href="#가독성" class="headerlink" title="가독성"></a>가독성</h3><p>첫째로는 가독성이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">sing Time = <span class="built_in">std</span>::chrono::steady_clock::time_point;</div><div class="line"></div><div class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Sound</span> &#123;</span> Beep, Siren, Whistle &#125;;</div><div class="line"></div><div class="line"><span class="keyword">using</span> Duration = <span class="built_in">std</span>::chrono::steady_clock::duration;</div><div class="line"></div><div class="line"><span class="comment">//시간 t에서 소리 s를 d 시간 동안 출력</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">SetAlarm</span><span class="params">(Time t, Sound s, Duration d)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>위와 같은 정보가 있을때, 우리가 의도하는 것은 ‘한시간 뒤에 30초동안 특정 소리를 울리게 한다’라는 것이라면 어떻게 하면 좋을까?<br>람다를 활용하면 다음과 같이 작성할 수 있다.(c++11)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//특정 소리 s를 인수로 받아서 한시간 뒤에 30초동안 알람을 울리게한다.</span></div><div class="line"><span class="keyword">auto</span> setSoundL =</div><div class="line">  [](Sound s)</div><div class="line">  &#123;</div><div class="line">  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono;</div><div class="line"></div><div class="line">  setAlarm(steady_clock::now() + hours(<span class="number">1</span>),</div><div class="line">  s,</div><div class="line">  seconds(<span class="number">30</span>));</div><div class="line">  &#125;;</div></pre></td></tr></table></figure></p>
+<p>c++14 에서는 다음과 같이 작성할 수 있다. c++14에서는 c++11에서의 사용자정의에 기초한 표준 접미사들이 있는데 예를들면 시간:h, 밀리초:ms, 초:s가 그 예이다. 이들은 st::literal에 구현되어 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">auto</span> setSoundL =</div><div class="line">  [](Sound s)</div><div class="line">  &#123;</div><div class="line">  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono;</div><div class="line">  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::literals; <span class="comment">//c++14 접미사</span></div><div class="line"></div><div class="line">  setAlarm(steady_clock::now() + <span class="number">1</span>h,</div><div class="line">  s,</div><div class="line">  <span class="number">30</span>s);</div><div class="line">  &#125;;</div></pre></td></tr></table></figure></p>
+<p>c++14에서는 위와같이 접미사를 사용하여 표현할 수도 있다. 람다를 보면 특정 사운드를 매개변수로 받아서 그 매개변수를 특정시간 뒤에 특정시간 동안 울리게해달라는 것을 가독성 좋게 읽어 낼수 있다. 그럼 이를 std::bind로 짜면 어떻게될까?</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono;</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::literals;</div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::placeholders; <span class="comment">//_1을 사용하는데 필요함</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> setSoundB =</div><div class="line">  <span class="built_in">std</span>::bind(setAlarm,</div><div class="line">  steady_clock::now() + <span class="number">1</span>h, <span class="comment">//문제가 있음</span></div><div class="line">  _1,</div><div class="line">  <span class="number">30</span>s);</div></pre></td></tr></table></figure>
+<p>대략적인 모습은 위와같다 하지만 엄밀히 말하면 문제가 있다.<br>선행적으로 알아야할 부분은 std::placeholders_1에 해당하는 것인데, 이는 setSoundB의 operator()이 실행되었을때 operator(매개변수…) 처럼 매개변수가 들어온다면 그 인자들이 들어가게될 인자의 순서대로 이름을 붙인것이다. 그런데 이러한 placeholder도 실은 가독성을 떨어뜨리는 요인중 하나이다. 왜냐하면 위의 setSoundB만 봐서는 placeholder에 들어갈 인자의 타입이 무엇인지 알 수 없기때문이다. 천상 이를 알기 위해서는 setAlarm의 정의를 봐야한다.<br>또한 이 코드가 잘못된점이 있다고했는데 steady_clock::now() + 1h는 std::bind가 호출되고 평가가 끝난 시점에서(바인드 객체가 생성되는 시점) 수행이 되어 의도와는 다른 동작을 하게 된다. 즉 setSoundB를 호출하고 1시간 뒤가 아닌 std::bind를 실행하고 난 1시간 뒤(바인드 객체가 생성되고 난 1시간 뒤)에 실행이 되는 것이다. 이를 해결하기 위해서는 steady_clock::now() + 1h 을 setAlarm 함수가 호출되는 시점으로 미뤄야 한다. 이는 어떻게 해야할까…?<br>중첩 std::bind를 사용하는 것이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> setSoundB =</div><div class="line">  <span class="built_in">std</span>::bind(setAlarm,</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::plus&lt;steady_clock::time_point&gt;(), </div><div class="line">  steady_clock::now(), <span class="number">1</span>h),</div><div class="line">  _1,</div><div class="line">  <span class="number">30</span>s);</div></pre></td></tr></table></figure>
+<p>그냥 딱봐도 너무 복잡하고 이해하는데 어려움이 있다. 그냥 lambda를 선호하는 것이 좋아보인다.<br>std:;bind에는 또다른 문제점이 있는데 바로 오버로딩이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Volume</span> &#123;</span> Normal, Loud, LoudPlusPlus &#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">setAlarm</span><span class="params">(Time t, Sound s, Duration d, Volume v)</span></span>;</div></pre></td></tr></table></figure>
+<p>위와 같이 setAlarm에 볼륨까지 매개변수로 받는 것이 오버로딩 되었다면 람다는 아무런 문제 없이 매개변수에 따라 오버로딩된 적절한 setAlarm을 호출해 줄 것이다. 하지만 std::bind는 setAlarm에 대한 정보를 이름으로만 그저 알고 있기때문에 어떤 setAlarm을 호출해줘야할지 모른다. 따라서 오류를 일으키게 된다. 이를 해결하기 위해서는 포인터를 사용하여 적절하게 타입 캐스팅을 해야한다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> SetAlarm3ParamType = <span class="keyword">void</span>(*)(Time t, Sound s, Duration d); <span class="comment">//타입캐스팅을 하기 위한 별칭 선언</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> setSoundB =</div><div class="line">  <span class="built_in">std</span>::bind(<span class="keyword">static_cast</span>&lt;SetAlarm3ParamType&gt;(setAlarm),</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::plus&lt;&gt;(),</div><div class="line">  steady_clock::now(),</div><div class="line">  <span class="number">1</span>h),</div><div class="line">  _1,</div><div class="line">  <span class="number">30</span>s);</div></pre></td></tr></table></figure></p>
+<p>그런데 위와같이 기능적인 면에서는 해결을 할 수 있을지 몰라도 또다른 문제점에 봉착하게 된다. 람다는 클로저 클래스의 함수 호출 연산자에서 setAlarm호출을 inline화 할 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//setAlarm의 본문이 inline화 될 가능성이 있음</span></div><div class="line">setSoundL(Sound::Siren);</div></pre></td></tr></table></figure></p>
+<p>그런데 반면 std::bind를 통한 함수에서는 inline화가 힘들 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//setAlarm의 본문이 inline화 될 가능성이 적음</span></div><div class="line">setSoundB(Sound::Siren)</div></pre></td></tr></table></figure></p>
+<p>왜냐하면 std::bind에서는 함수 포인터를 통해서 함수를 호출하고 있는데 이는 함수포인터에 있는 주소로 가서 직접 함수를 호출해야하므로 컴파일러 입장에서 inline화 하기가 힘들기 때문이다. 따라서 성능적인 면에서 lambda가 유리하다</p>
+<p>또다른 예시를 보자. 다음은 어떤 값이 lowVal과 highVal 사이에 있는지를 판별하는 기능을 람다로 작성한 것이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//C++11 에서는 람다가 auto 매개변수를 받을 수 없음</span></div><div class="line"><span class="keyword">auto</span> betweenL =</div><div class="line">  [lowVal highVal]</div><div class="line">  (<span class="keyword">int</span> val)</div><div class="line">  &#123; <span class="keyword">return</span> lowVal &lt;= val &amp;&amp; val &lt;= highVal; &#125;;</div><div class="line"></div><div class="line"><span class="comment">//C++14 에서는 람다가 auto 매개변수를 받을 수 있음</span></div><div class="line"><span class="keyword">auto</span> betweenL =</div><div class="line">  [lowVal, highVal]</div><div class="line">  (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; val)</div><div class="line">  &#123; <span class="keyword">return</span> lowVal &lt;= val &amp;&amp; val &lt;= highVal; &#125;;</div></pre></td></tr></table></figure>
+<p>이를 std::bind를 통해서 짜면 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::placeholders;</div><div class="line"></div><div class="line"><span class="comment">//C++11 버전에서는 비교할 형식을 지정해주어야함</span></div><div class="line"><span class="keyword">auto</span> betweenB =</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::logical_and&lt;<span class="keyword">bool</span>&gt;(),</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::less_equal&lt;<span class="keyword">int</span>&gt;(),lowVal, _1),</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::less_equal&lt;<span class="keyword">int</span>&gt;(), _1, highVal);</div><div class="line"></div><div class="line"><span class="comment">//C++14 버전에서는 비교할 형식을 지정해주지 않아도 됨</span></div><div class="line"><span class="keyword">auto</span> betweenB =</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::logical_and&lt;&gt;(),</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::less_equal&lt;&gt;(),lowVal, _1),</div><div class="line">  <span class="built_in">std</span>::bind(<span class="built_in">std</span>::less_equal&lt;&gt;(), _1, highVal);</div></pre></td></tr></table></figure></p>
+<p>그냥 해석하기도 싫을정도로 lambda가 더 눈에 잘들어온다. 유지보수성에서도 비교할 수 없을만하다.<br>또한 std:;bind에서는 기능 자체에 대한 이해가 부족해서 의도치않은 동작을 야기할 수 있다.<br>다음 코드를 보자</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">CompLevel</span> &#123;</span> Low, Normal, High &#125;; <span class="comment">//압축 수준</span></div><div class="line"></div><div class="line"><span class="function">Widget <span class="title">compress</span><span class="params">(<span class="keyword">const</span> Widget&amp; w, <span class="comment">//w의 압축 복사본을 만든다</span></span></span></div><div class="line"><span class="function"><span class="params">  CompLevel lev)</span></span>;</div><div class="line"></div><div class="line">Widget w;</div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::placeholders;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> compressRateB = <span class="built_in">std</span>::bind(compress, w, _1);</div></pre></td></tr></table></figure>
+<p>여기서 마지막 std:;bind의 인자로 넘어간 w는 값으로 넘어간 것일까 참조로 넘어간 것일까? 이는 매우 중요하다. 참조로 넘어가면 compressRateB를 호출함으로써 기존 w의 값이 변경될 수 있기 때문이다. 답은 ‘값으로 저장된다’ 이다. 이는 지식적인 내용이므로 모르면 그냥 모르고 넘어가야하는 부분이다. 하지만 람다의 경우는 캡처를 통해서 이를 바로 명시적으로 확인할 수 잇다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> compressRateL =</div><div class="line">  [w](CompLevel lev)</div><div class="line">  &#123; <span class="keyword">return</span> compress(w, lev); &#125;;</div></pre></td></tr></table></figure></p>
+<p>위에서 보면 w는 값으로 캡쳐되었으므로 값으로 매개변수 전달이 이루어 졌음을 알 수 잇다.(명시적으로)<br>그렇다면 람다와 std::bind 객체에 넘어가는 매개변수는 어떻게 될까?</p>
+<p>람다는 여전히 매개변수의 형식을 보고 명시적으로 파악할 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//인수는 값으로 전달된다</span></div><div class="line">compressRateL(CompLevel::High);</div></pre></td></tr></table></figure></p>
+<p>바인드객체는 바인드 객체가 생성되게 한 std::bind에 가서 직접확인 해보아야 한다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//인수는 어떻게 전달될까?</span></div><div class="line">compressRateB(CompLevel::High);</div></pre></td></tr></table></figure></p>
+<p>정답은 bind 객체에 넘어가는 인자는 모두 참조로 넘어간다. 이는 perfect forwarding을 사용하기 때문이다.</p>
+<p>이러한 면모들을 보았을땐 람다가 항상 std::bind보다 좋은것 같지만 그렇지 않을수도 있는 경우 2가지를 소개한다.</p>
+<ul>
+<li>이동 갈무리 : C++11 람다는 이동갈무리를 지원하지 않는다.. 그러나 람다와 std::bind의 조합을 통해서 이동 갈무리를 흉내내는 것은 가능하다. 그러나 C++14에서는 초기화 갈무리로 인해 이동 갈무리가 가능하기에 필수는 아니다.<ul>
+<li>다형적 함수 객체 : 바인드 객체에 대한 함수 호출 연산자는 완벽 전달을 사용하기 때문에 그 어떤 형식의 인수들도 받을 수 있다. 이는 객체를 템플릿화된 함수 호출 연산자와 묶으려 할 때 유용하다. 그러나 C++14에서는 역시 가능하다.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PolyWidget</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T&amp; param)</span></span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//std::bind를 통하여 PolyWidget 객체를 묶기 위함</span></div><div class="line">PolyWidget pw;</div><div class="line"><span class="keyword">auto</span> boundPW = <span class="built_in">std</span>::bind(pw, _1);</div></pre></td></tr></table></figure>
+<p>즉 위와같이 선언하면 boundpw에는 어떤 인자든 넘길 수 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">boundPW(<span class="number">1930</span>); <span class="comment">//PolyWidget::operator()에 int 넘김</span></div><div class="line"></div><div class="line">boundPW(<span class="literal">nullptr</span>); <span class="comment">//PolyWidget::operator()에 nullptr 넘김</span></div><div class="line"></div><div class="line">boundPW(<span class="string">"Rosebud"</span>); <span class="comment">//PolyWidget::operator()에 문자열을 넘김</span></div></pre></td></tr></table></figure></p>
+<p>c++14에서는 다음과 같이 작성 가능하다. c++14에서는 auto 매개변수를 가진 람다를 사용할 수 있기 때문이다. 따라서 std:;bind없이도 가능하다<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">auto</span> boundPW = [pw](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; param)</div><div class="line">  &#123; pw(param); &#125;;</div></pre></td></tr></table></figure></p>
+<p>이를 통해서 c++14 에서는 std::bind가 통용되는 경우가 하나도 없음을 알 수 있다.</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>std::bind를 사용하는 것보다 람다를 선호하자. 가독성, 명시성, 효유성 모든 면에서 뛰어나다</li>
+<li>C++14에서는 std::bind를 쓸 이유가 전혀 없다. C++11에서는 2가지 정도가 있는데 이동 갈무리 구현과 객체를 템플릿화된 함수 호출 연산자에 묶을때 사용한다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://LeeInJae.github.io/2017/11/03/EMC-34/" data-id="cj9iqmzx4000hx4vighwh207f" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>seguir:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/LeeInJae" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/11/01/EMC-33/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">antiguo</strong>
+        <p class="article-nav-title">EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recientes</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/03/EMC-34/" class="title">EMC_34</a></p>
+                            <p class="item-date"><time datetime="2017-11-02T17:20:41.000Z" itemprop="datePublished">2017-11-03</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/01/EMC-33/" class="title">EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라</a></p>
+                            <p class="item-date"><time datetime="2017-10-31T16:22:30.000Z" itemprop="datePublished">2017-11-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/25/EMC-32/" class="title">EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라</a></p>
+                            <p class="item-date"><time datetime="2017-10-24T16:57:25.000Z" itemprop="datePublished">2017-10-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/23/EMC-31-1/" class="title">EMC_31. 기본 갈무리 모드를 피하라</a></p>
+                            <p class="item-date"><time datetime="2017-10-22T15:12:33.000Z" itemprop="datePublished">2017-10-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/10/23/EMC-31/" class="title">lambda expression</a></p>
+                            <p class="item-date"><time datetime="2017-10-22T15:01:07.000Z" itemprop="datePublished">2017-10-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categorias</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archivos</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">etiquetas</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/universal-reference/">universal reference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/보편참조/">보편참조</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">etiqueta cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/EMC/" style="font-size: 20px;">EMC</a> <a href="/tags/c/" style="font-size: 20px;">c++</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/std-forward/" style="font-size: 13.33px;">std::forward</a> <a href="/tags/std-move/" style="font-size: 16.67px;">std::move</a> <a href="/tags/universal-reference/" style="font-size: 10px;">universal reference</a> <a href="/tags/보편참조/" style="font-size: 10px;">보편참조</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/LeeInJae">Git</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 cowspirit</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://LeeInJae.github.io/2017/11/03/EMC-34/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
