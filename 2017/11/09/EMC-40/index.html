@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8">
     
-    <title>EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라 | 프로그래밍 안녕</title>
+    <title>EMC_40 | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="c++,EMC,std::move,std::forward" />
+        <meta name="keywords" content="c++,EMC,std::atomic,volatile" />
     
-    <meta name="description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
-<meta name="keywords" content="c++,EMC,std::move,std::forward">
+    <meta name="description" content="EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic, std::atomic, std::atomic 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공">
+<meta name="keywords" content="c++,EMC,std::atomic,volatile">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라">
-<meta property="og:url" content="https://LeeInJae.github.io/2017/11/01/EMC-33/index.html">
+<meta property="og:title" content="EMC_40">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/11/09/EMC-40/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
-<meta property="og:description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
-<meta property="og:updated_time" content="2017-10-31T16:44:14.752Z">
+<meta property="og:description" content="EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic, std::atomic, std::atomic 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공">
+<meta property="og:updated_time" content="2017-11-08T18:16:24.504Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라">
-<meta name="twitter:description" content="일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&amp;">
+<meta name="twitter:title" content="EMC_40">
+<meta name="twitter:description" content="EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic, std::atomic, std::atomic 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공">
     
 
     
@@ -137,14 +137,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-EMC-33" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-EMC-40" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라
+        EMC_40
         </h1>
     
 
@@ -154,40 +154,57 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2017/11/01/EMC-33/" class="article-date">
-            <time datetime="2017-10-31T16:22:30.000Z" itemprop="datePublished">2017-11-01</time>
+        <a href="/2017/11/09/EMC-40/" class="article-date">
+            <time datetime="2017-11-08T18:15:35.000Z" itemprop="datePublished">2017-11-09</time>
         </a>
     </div>
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-atomic/">std::atomic</a>, <a class="tag-link" href="/tags/volatile/">volatile</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="일반적-람다-generic-lambdas"><a href="#일반적-람다-generic-lambdas" class="headerlink" title="일반적 람다(generic lambdas)"></a>일반적 람다(generic lambdas)</h3><p>C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.<br>예를들어 다음과 같은 람다가 있다고 해보자.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span> x)&#123; <span class="keyword">return</span> normalize(xㄴ); &#125;;</div></pre></td></tr></table></figure></p>
-<p>위의 람다가 산출하는 클로저 클래스의 함수 호출 연산자는 다음과 같은 모습이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> 컴파일러가_만든_어떤_클래스_이름</span></div><div class="line"><span class="class">&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T x)</span> <span class="keyword">const</span></span></div><div class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> normalize(x); &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>이 예제에서 람다는 매개변수 x를 normalize함수로 전달한다. 역시 전달은 perfect하게 이루어져야하므로 왼값과 오른값에 대해서 다른 방식으로 처리되게 하면 안된다. 그런데 위에서 x는 항상 왼값이고, normalize에는 왼값만 넘어가게된다. 즉 x에 오른값을 넘겼으면 normalize에는 오른값이 넘어가야한다.<br>따라서 완벽전달을 해야하기때문에 수정을 해야 한다.</p>
+            <h3 id="EMC-40-동시성에는-std-atomic을-사용하고-volatile은-특별한-메모리에-사용하라"><a href="#EMC-40-동시성에는-std-atomic을-사용하고-volatile은-특별한-메모리에-사용하라" class="headerlink" title="EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라"></a>EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라</h3><p>프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic<int>, std::atomic<bool>, std::atomic<widget*> 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공한다. 마치 mutx로 보호되는 임계영역안에서 수행되는 것처럼 행동한다. 그런데 이러한 연산들은 실제로 뮤텍스를 사용할 때보다 좀 더 효율적인 특별한 기계어 명령을 사용한다.</widget*></bool></int></p>
+<h3 id="std-atomic"><a href="#std-atomic" class="headerlink" title="std::atomic"></a>std::atomic</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; ai(<span class="number">0</span>); <span class="comment">//0으로 초기화</span></div><div class="line">ai = <span class="number">10</span>; <span class="comment">//원자적으로 ai를 10으로 설정</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; ai; <span class="comment">// 원자적으로 ai의 값을 얻음</span></div><div class="line">++ai; <span class="comment">//원자적으로 ai를 증가(11이 된다)</span></div><div class="line">--ai; <span class="comment">//원자적으로 ai를 감소한다(10이 된다)</span></div></pre></td></tr></table></figure>
+<p>이 문장들이 실행되는 동안 ai를 읽는 다른 스레드들이 보게 되는 값은 0이나 10, 11뿐이다. 읽기-수정-쓰기(Read-Modify-Write: RMW) 연산은 각각 원자적으로 수행된다. std::atomic은 이처럼 객체가 생성되고 나면, 그 객체에 대한 모든 멤버 함수는 다른 스레드들에게 반드시 원자적으로 보인다.</p>
+<h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>volatile은 다중 스레드 문맥에서 거의 아무것도 보장하지 않는다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">int</span> <span class="title">vi</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//vi 를 0으로 초기화</span></div><div class="line">vi = <span class="number">10</span>; <span class="comment">//vi를 10으로 설정</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; vi ; <span class="comment">//vi의 값을 읽음</span></div><div class="line">++vi; <span class="comment">// vi를 증가(11이 된다)</span></div><div class="line">--vi; <span class="comment">// vi를 감소한다(10이 된다)</span></div></pre></td></tr></table></figure></p>
+<p>이 코드를 실행하는 동안 vi의 값을 다른 스레드들이 읽는다면 그 스레드들은 그 어떤 값이라도 볼 수 있다. 그리고 이러한 코드는 미정의 행동을 유발한다. 이유는 간단하다 vi를 수정하기 있는데 만일 그와 동시에 vi를 읽는 다른 스레드가 있따면 std::atomic도 아니고 뮤텍스로 보호받지도 못하므로 메모리에 기록과 읽기가 동시에 접근하는 상황이 되기 떄문이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; ac(<span class="number">0</span>); <span class="comment">//원자적 카운터</span></div><div class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">int</span> <span class="title">vc</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//휘발성 카운터</span></div><div class="line"></div><div class="line"><span class="comment">// 스레드 1 에서 ++ac; ++vc;</span></div><div class="line"><span class="comment">// 스레드 2 에서 ++ac; ++vc;</span></div></pre></td></tr></table></figure></p>
+<p>두 스레드 모두 실행이 끝난 후에 ac의 값과 vc의 값은 어떻게 될까?</p>
 <ul>
-<li>매개변수 x는 보편참조여야 한다</li>
-<li>std::forward를 통해서 normalize에 완벽 전달을 한다</li>
+<li>ac는 반드시 2이다. 각 증가 연산이 원자적으로 수행되었기 때문이다.</li>
+<li>vc의 값은 2일 수도 있고 아닐 수도 있다. 원자적으로 실행되지 않았기 때문이다.</li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span>&amp;&amp; x)</div><div class="line">         &#123; <span class="keyword">return</span> normalize(<span class="built_in">std</span>::forward&lt;???&gt;(x)); &#125;;</div></pre></td></tr></table></figure>
-<p>그런데 std::forward&lt;???&gt;에서 ???에 무엇을 대체 써주어야하는 것일까? 보통 템플릿에서는 typename T에서 T를 넘겼지만 auto로 보편참조 선언이 되어있기때문에 타입을 지정할 수 없다. 어떻게 해야할까?<br>이경우 항목3에서 배웠던 decltype을 쓰면된다. decltype(x)를 쓰면 x의 타입을 얻을수 있기 때문이다. 그럼 2가지 경우로 나누어서 생각해보자</p>
+<p>다음 시나리오를 보자</p>
 <ul>
-<li>x에 왼값이 전달 되었을때</li>
-<li>x에 오른값이 전달 되었을때</li>
+<li>스레드 1이 vc의 값을 읽는다 (0)</li>
+<li>스레드 2가 vc의 값을 읽는다(0)</li>
+<li>스레드 1이 자신이 읽은 값 0을 증가시키고 vc에 기록한다.(1)</li>
+<li>스레드 2가 자신이 읽은 값 0을 증가하고, 그 결과를 기록한다(1)</li>
 </ul>
-<p>x에 왼값이 전달되었을때는 decltype(x)는 왼값 참조에 해당하는 형식을 산출하고, 오른값이 전달되었다면 decltype(x)는 오른값 참조 형식을 산출한다.<br>자 여기서 다시 std::forward의 구현을 살펴보자<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">T&amp;&amp; forward&lt;<span class="keyword">remove_reference_t</span>&lt;T&gt;&amp; param)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;T&amp;&amp;&gt;(param);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>위의 std::forward에 Widget 형식의 오른값을 완벽하게 전달할 때 인스턴스화 되는 모습은 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp;&amp; &amp;&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&amp; &amp;&amp;&gt;(param); <span class="comment">//T가 Widget&amp;&amp;일 때의 std::forward의 인스턴스 결과(참조 축약 적용전)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>위에서 참조축약까지 적용(오른값 참조에 대한 오른값 참조는 단일한 오른값 참조로 축약)하면 다음과 같다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">Widget&amp;&amp; <span class="title">forward</span><span class="params">(Widget&amp; param)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Widget&amp;&amp;&gt;(param); <span class="comment">//참조 축약 적용</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>이는 처음에 std::forward가 Widget형식으로 인스턴스화 되었을때와 똑같은 결과다. 따라서 decltype을 적용하면 왼값, 오른값 매개변수에 대해서 완벽전달이 가능함을 알 수 있다.<br>이를 람다에 적용해보자<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span>&amp;&amp; x)</div><div class="line">      &#123;</div><div class="line">          <span class="keyword">return</span> normalize(<span class="built_in">std</span>::forward&lt;<span class="keyword">decltype</span>(x)&gt;(x)); <span class="comment">//decltype을 톻안 완벽전달이 가능하다.</span></div><div class="line">      &#125;;</div></pre></td></tr></table></figure></p>
-<p>다음과 같이 마침표 세 개를 두 번 추가하면 매개변수 하나가 아니라 임의의 개수의 매개변수들을 받아서 완벽하게 전달하는 람다가 된다.(이는 C++14에서 람다가 가변 인수를 지원하기 때문이다)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span>&amp;&amp;... xs)</div><div class="line">      &#123;</div><div class="line">          <span class="keyword">return</span> normalize(<span class="built_in">std</span>::forward&lt;<span class="keyword">decltype</span>(xs)&gt;(xs)...);</div><div class="line">      &#125;;</div></pre></td></tr></table></figure></p>
-<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><p>std::forward를 통해서 전달 할 auto&amp;&amp; 매개변수에는 decltype을 사용하라.</p>
+<p>즉 vc는 총 2번이 증가되었지만, 최종적인 값은 1이다.(얼마든지 다른 결과도 나올 수 있다)</p>
+<h3 id="volatile과-동시성"><a href="#volatile과-동시성" class="headerlink" title="volatile과 동시성"></a>volatile과 동시성</h3><p>volatile에서 이러한 RMW연산만 실패하는 상황이 발생하는 것이 아니다. 실행의 순서에도 영향을 미치게 된다. 다음 코드를 보자<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">bool</span>&gt; valAvailable(<span class="literal">false</span>);</div><div class="line"><span class="keyword">auto</span> imptValue = computeImportantValue(); <span class="comment">//값을 계산</span></div><div class="line">valAvailable = <span class="literal">true</span>; <span class="comment">// 다른 과제에게 값이 준비되었음을 알림</span></div></pre></td></tr></table></figure></p>
+<p>위 코드는 실행의 선후 순서가 반드시 보장되어야 한다. 따라서 imptValue 배정이 valAvailable 배정보다 먼저 일어나야 한다. 그런데 일반적으로 최적화를 위해서 컴파일러가 임의루 실행 순서를 바꾸는 것은 합당한 일이다. (컴파일러가 바꾸지 않는다고 해도 하드웨어에서 바꿀 수도 있다).<br>그런데 std::atomic을 사용하면 코드의 순서 재배치에 대한 제약들이 생긴다. 즉 std::atomic 변수를 기록하는 문장 이전에 나온 그 어떤 코드도 그 문장 이후에 실행되지 않아야 한다.<br>즉, 실행순서도 유지가 반드시 되는 것이다.<br>하지만 volatile은 그런 코드 재배치 제약이 가해지지 않는다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">bool</span> <span class="title">valAvailable</span><span class="params">(<span class="literal">false</span>)</span></span>;</div><div class="line"><span class="keyword">auto</span> imptValue = computeImportantValue(); <span class="comment">//값을 계산</span></div><div class="line">valAvailable = <span class="literal">true</span>; <span class="comment">// 다른 스레드들은 이 배정을 imptValue 배정 이전에 볼 수 있다.</span></div></pre></td></tr></table></figure>
+<p>즉 최적화에 의해 수행순서가 뒤바낄 수 있다라는 의미이다. 이러한 volatile의 특징들(RMW 원자적 연산 보장x, 최적화 재배치)에 의해서 volatile은 동시성 프로그래밍에 유용하지 않을 수 있다. 대신 volatile은 해당 키워드가 선언된 변수가 사용하는 메모리가 보통의 방식으로 행동하지 않는다는 점을 컴파일러에게 알려주는 역할을 한다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> y = x;</div><div class="line">y = x;</div><div class="line">x = <span class="number">10</span>;</div><div class="line">x= <span class="number">20</span>;</div></pre></td></tr></table></figure>
+<p>위 코드를 컴파일러는<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> y = x;</div><div class="line">x = <span class="number">20</span>;</div></pre></td></tr></table></figure></p>
+<p>으로 최적화 할 수 있다. 그런데 이러한 코드를 작성할까? 라는 의문이 들기도 하지만 특별한 이유에 의해서 최적화가 되지 않도록 해야하는 경우도 존재한다. (온도계에서 온도가 변하는 것을 감지하기 위해서 등등). 정리하면 volatile은 해당 코드가 특별한 메모리 이기 때문에 이 메모리에 대한 연산들에는 그 어떤 최적화도 수행하지 말라고 언질하는 것이다.</p>
+<p>따라서<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">volatile</span> <span class="keyword">int</span> x; <span class="comment">//volatile로 선언하면 최적화로 제거 할 수 없다. 따라서 밑의 네 문장은 그대로 실행된다.</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> y = x; <span class="comment">//참고로 auto 연역은 const와 volatile을 무시하므로 y 형식은 int</span></div><div class="line">y = x;</div><div class="line">x = <span class="number">10</span>;</div><div class="line">x= <span class="number">20</span>;</div></pre></td></tr></table></figure></p>
+<p>이를 통해 정리하면 다음과 같다.</p>
+<ul>
+<li>std::atomic은 동시적 프로그래밍에 유용하나, 특별한 메모리의 접근에는 유용하지 않다.</li>
+<li>volatile은 특별한 메모리의 접근에 유용하나, 동시적 프로그래밍에는 유용하지 않다.</li>
+</ul>
+<p>std::atomic과 volatile은 용도가 다르므로 함께 사용할 수도 있다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">volatile</span> <span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; val; <span class="comment">//val에 대한 연산들은 원자적이며, 최적화를 진행하지 않는다.</span></div></pre></td></tr></table></figure></p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>std::atomic은 뮤텍스 보호 없이 여러 스레드가 접근하는 자료를 위한 것으로, 동시적 소프트웨어의 작성을 위한 도구이다.</li>
+<li>volatile은 읽기와 기록을 최적화로 제거하지 말아야 하는 메모리를 위한 것으로, 특별한 메모리를 다룰 때 필요한 도구이다.</li>
+</ul>
 
         </div>
         <footer class="article-footer">
@@ -195,7 +212,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/11/01/EMC-33/" data-id="cj9rdarfa000emsvir90v9jbu" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/11/09/EMC-40/" data-id="cj9rdarfl000omsvidzkyaurw" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -332,20 +349,20 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/11/03/EMC-34/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/11/09/sophie-1/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">més nou</strong>
         <p class="article-nav-title">
         
-            EMC_34
+            sophie_1
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/2017/10/25/EMC-32/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/11/07/EMC-35/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">antic</strong>
-        <p class="article-nav-title">EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라</p>
+        <p class="article-nav-title">EMC_35.</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -497,7 +514,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'https://LeeInJae.github.io/2017/11/01/EMC-33/';
+    var disqus_url = 'https://LeeInJae.github.io/2017/11/09/EMC-40/';
     
     (function() {
     var dsq = document.createElement('script');
