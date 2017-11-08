@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Etiqueta: EMC | 프로그래밍 안녕</title>
+    <title>Etiqueta: std::launch::async | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta property="og:type" content="website">
 <meta property="og:title" content="프로그래밍 안녕">
-<meta property="og:url" content="https://LeeInJae.github.io/tags/EMC/index.html">
+<meta property="og:url" content="https://LeeInJae.github.io/tags/std-launch-async/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="프로그래밍 안녕">
@@ -126,7 +126,7 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <i class="icon fa fa-tag"></i>Etiqueta: <em>EMC</em>
+    <i class="icon fa fa-tag"></i>Etiqueta: <em>std::launch::async</em>
     </h1>
 </div>
                         <div class="main-body-content">
@@ -168,289 +168,12 @@
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-11-08T18:15:35.000Z" itemprop="datePublished">2017-11-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/11/09/EMC-40/">EMC_40</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic, std::atomic, std::atomic 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-11-06T15:36:10.000Z" itemprop="datePublished">2017-11-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/11/07/EMC-35/">EMC_35.</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            EMC_35. 스레드 기반 프로그래밍보다 과제 기반 프로그래밍을 선호하라doAsyncWork라는 함수를 비동기적으로 실행한다고 하자. 방법은 크게 2가지가 있다.
-
-std::thread 객체를 생성해서 그 객체에서 doAsyncWork를 실행(thread 기반)
-또 하나는 doAsyncWork를 std::async에 넘겨서 실행(task 기반)
-
-123//
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-11-02T17:20:41.000Z" itemprop="datePublished">2017-11-03</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/11/03/EMC-34/">EMC_34</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            std::bind보다 람다그렇다면 왜 람다가 std::bind보다 좋은 것일까?
-가독성첫째로는 가독성이다.123456789sing Time = std::chrono::steady_clock::time_point;enum class Sound &#123; Beep, Siren, Whistle &#125;;using Duration = std::chrono::
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-31T16:22:30.000Z" itemprop="datePublished">2017-11-01</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/11/01/EMC-33/">EMC_33.std::forward를 통해서 전달할 auto&amp;&amp; 매개변수에는 decltype을 사용하라</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            일반적 람다(generic lambdas)C++14에서 고무적인 기능 중 하나가 일반적 람다다. 이 일반적 람다는 매개변수 명세에 auto를 사용하는 람다이다. 일반적 람다의 기능을 구현하는 것은 간단한데 람다의 클로저 클래스의 operator()를 템플릿 함수로 만들면 된다.예를들어 다음과 같은 람다가 있다고 해보자.1auto f = [](auto x)&
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-24T16:57:25.000Z" itemprop="datePublished">2017-10-25</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/25/EMC-32/">EMC_32. 객체를 클로저 안으로 이동하려면 초기화 갈무리를 사용하라</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            앞에서 값 갈무리와 참조 갈무리에 대해서 살펴봤는데 둘 다 마땅치 않은 경우가 있다. 이동 전용 객체를 클로저 안으로 들어오려는 경우가 좋은 예이다.(std::unique_ptr이나 std::future)결론부터 말하면 C++11 에는 그렇게 할 방법이 없다. 또한 복사가 아닌 이동이 더 저렴한 객체를 클로저 안으로 들여오는 방법 또한 없다.(C++11에는
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-22T15:12:33.000Z" itemprop="datePublished">2017-10-23</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/23/EMC-31-1/">EMC_31. 기본 갈무리 모드를 피하라</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            기본 갈무리 모드를 피하라C++11에서 기본 갈무리(capture) 모드는 두 가지다
-
-참조 갈무리(by reference)
-값에 의한 갈무리(by value)
-
-기본 갈무리 모드에서는 문제가 될 수 있는 것들이 있는데 이를 살펴보자.
-참조 갈무리참조 갈무리를 사용하는 클로저는 지역 변수 또는 람다가 정의된 범위에서 볼 수 있는 매개변수에 대한 참조를 가지
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-22T15:01:07.000Z" itemprop="datePublished">2017-10-23</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/23/EMC-31/">lambda expression</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            람다 표현식람다를 이용하면 함수 객체를 아주 쉽게 만들 수 있따. 따라서 C++ 소프트웨어 개발에서 람다는 아주 큰 영향을 미친다특히나 STL에서 “_if” 알고리즘들(이를테면 std::find_if, std::remove_if, std::count_if 등) 가장 자주 쓰이는 술어(predicate)들이, 람다를 통해 폭발적으로 활용될 수 있는 predi
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-19T15:26:07.000Z" itemprop="datePublished">2017-10-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/20/EMC-30/">EMC_30. 완벽 전달이 실패하는 경우들을 잘 알아두라.</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            완벽 전달이 무엇인지 알아보자먼저 전달(forwarding)은 한 함수가 자신의 인수들을 다른 함수에 넘겨주는(전달하는) 것을 뜻한다.이때 궁극적으로 달성해야하는 것은 전달받는 함수(B)가 애초에 첫함수(A)가 받았던 것과 동일한 객체들을 받게하는 것이다.값 전달 방식으로는 이러한 목표를 달성할 수 없다. 값전달 매개변수는 원래의 호출자가 넘겨준 인수의 “
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a>
-            </div>
-            <div class="date"><time datetime="2017-10-18T17:42:47.000Z" itemprop="datePublished">2017-10-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2017/10/19/EMC-29/">EMC_29.이동 의미론에 대해 제대로 알아야 할 것들</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            이동 의미론C++11에서 가장 주된 기능 중 하나이다. 이를 통해 효율을 올릴 수 있다라는 것은 큰 의미가 있다.예를들면 컨테이너의 이동을 포인터의 복사를 하는 것만큼 저렴하게 할 수 있고, 임시 객체의 복사 또한 이동으로 대체하여 효율을 올릴 수 있다라는 것이다.그런데 조금은 냉정하게 바라보아야 한다는게 이 챕터에서의 요점이다.
-우선 이동 의미론을 지원하
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
 
     </div></section>
 
-
-    <nav id="page-nav">
-        <span class="pages">Pàgina 1 de 2</span>
-        <span class="page-number current">1</span><a class="page-number" href="/tags/EMC/page/2/">2</a><a class="extend next" rel="next" href="/tags/EMC/page/2/">&raquo;</a>
-    </nav>
 
 
                         </div>

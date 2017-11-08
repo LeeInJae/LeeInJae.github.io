@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8">
     
-    <title>lambda expression | 프로그래밍 안녕</title>
+    <title>EMC_36 | 프로그래밍 안녕</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="c++,EMC,std::move,std::forward" />
+        <meta name="keywords" content="c++,EMC,std::launch::async" />
     
-    <meta name="description" content="람다 표현식람다를 이용하면 함수 객체를 아주 쉽게 만들 수 있따. 따라서 C++ 소프트웨어 개발에서 람다는 아주 큰 영향을 미친다특히나 STL에서 “_if” 알고리즘들(이를테면 std::find_if, std::remove_if, std::count_if 등) 가장 자주 쓰이는 술어(predicate)들이, 람다를 통해 폭발적으로 활용될 수 있는 predi">
-<meta name="keywords" content="c++,EMC,std::move,std::forward">
+    <meta name="description" content="EMC_36. 비동기성이 필수일 때에는 std::launch::async를 지정하라.std::async를 호출해서 어떤 함수를 실행하는 것에는 그 함수를 비동기적으로 실행하겠다는 의도가 깔려있다. 하지만 항상 그런 의미를 갖는 것은 아니다. std::async호출은 함수를 어떤 시동 방침에 따라 실행한다는 좀 더 일반적인 의미를 갖는다.함수 f를 std::">
+<meta name="keywords" content="c++,EMC,std::launch::async">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lambda expression">
-<meta property="og:url" content="https://LeeInJae.github.io/2017/10/23/EMC-31/index.html">
+<meta property="og:title" content="EMC_36">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/11/09/EMC-36/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
-<meta property="og:description" content="람다 표현식람다를 이용하면 함수 객체를 아주 쉽게 만들 수 있따. 따라서 C++ 소프트웨어 개발에서 람다는 아주 큰 영향을 미친다특히나 STL에서 “_if” 알고리즘들(이를테면 std::find_if, std::remove_if, std::count_if 등) 가장 자주 쓰이는 술어(predicate)들이, 람다를 통해 폭발적으로 활용될 수 있는 predi">
-<meta property="og:updated_time" content="2017-10-22T15:12:03.859Z">
+<meta property="og:description" content="EMC_36. 비동기성이 필수일 때에는 std::launch::async를 지정하라.std::async를 호출해서 어떤 함수를 실행하는 것에는 그 함수를 비동기적으로 실행하겠다는 의도가 깔려있다. 하지만 항상 그런 의미를 갖는 것은 아니다. std::async호출은 함수를 어떤 시동 방침에 따라 실행한다는 좀 더 일반적인 의미를 갖는다.함수 f를 std::">
+<meta property="og:updated_time" content="2017-11-08T18:19:53.398Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lambda expression">
-<meta name="twitter:description" content="람다 표현식람다를 이용하면 함수 객체를 아주 쉽게 만들 수 있따. 따라서 C++ 소프트웨어 개발에서 람다는 아주 큰 영향을 미친다특히나 STL에서 “_if” 알고리즘들(이를테면 std::find_if, std::remove_if, std::count_if 등) 가장 자주 쓰이는 술어(predicate)들이, 람다를 통해 폭발적으로 활용될 수 있는 predi">
+<meta name="twitter:title" content="EMC_36">
+<meta name="twitter:description" content="EMC_36. 비동기성이 필수일 때에는 std::launch::async를 지정하라.std::async를 호출해서 어떤 함수를 실행하는 것에는 그 함수를 비동기적으로 실행하겠다는 의도가 깔려있다. 하지만 항상 그런 의미를 갖는 것은 아니다. std::async호출은 함수를 어떤 시동 방침에 따라 실행한다는 좀 더 일반적인 의미를 갖는다.함수 f를 std::">
     
 
     
@@ -137,14 +137,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-EMC-31" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-EMC-36" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        lambda expression
+        EMC_36
         </h1>
     
 
@@ -154,32 +154,51 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2017/10/23/EMC-31/" class="article-date">
-            <time datetime="2017-10-22T15:01:07.000Z" itemprop="datePublished">2017-10-23</time>
+        <a href="/2017/11/09/EMC-36/" class="article-date">
+            <time datetime="2017-11-08T18:19:25.000Z" itemprop="datePublished">2017-11-09</time>
         </a>
     </div>
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/std-move/">std::move</a>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-launch-async/">std::launch::async</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="람다-표현식"><a href="#람다-표현식" class="headerlink" title="람다 표현식"></a>람다 표현식</h3><p>람다를 이용하면 함수 객체를 아주 쉽게 만들 수 있따. 따라서 C++ 소프트웨어 개발에서 람다는 아주 큰 영향을 미친다<br>특히나 STL에서 “_if” 알고리즘들(이를테면 std::find_if, std::remove_if, std::count_if 등) 가장 자주 쓰이는 술어(predicate)들이, 람다를 통해 폭발적으로 활용될 수 있는 predicate가 늘어난다.<br>예를들면 std::sort, std::nth_element, std::lower_bound 등에서도 마찬가지이다.<br>또한 std::nique_ptr, std::shared_ptr에서 custom 삭제자를 간단하게 만들 수 있고, 다중 스레도 API의 조건 변수를 위한 술어를 지정하는 것도 그만큼 간단하다.<br>게다가 콜백 함수, 인터페이스 적응함수, 단발성(일회성) 호출을 위한 문맥에 국한되는 함수를 즉석에서 지정할때도 유용하게 쓰인다.</p>
+            <h3 id="EMC-36-비동기성이-필수일-때에는-std-launch-async를-지정하라"><a href="#EMC-36-비동기성이-필수일-때에는-std-launch-async를-지정하라" class="headerlink" title="EMC_36. 비동기성이 필수일 때에는 std::launch::async를 지정하라."></a>EMC_36. 비동기성이 필수일 때에는 std::launch::async를 지정하라.</h3><p>std::async를 호출해서 어떤 함수를 실행하는 것에는 그 함수를 비동기적으로 실행하겠다는 의도가 깔려있다. 하지만 항상 그런 의미를 갖는 것은 아니다. std::async호출은 함수를 어떤 시동 방침에 따라 실행한다는 좀 더 일반적인 의미를 갖는다.<br>함수 f를 std::async를 통해서 실행한다고 할때</p>
 <ul>
-<li><p>람다 표현식은 이름 그대로 하나의 표현식이다. 소스코드의 일부가 되는 것이다.</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::find_if(container.begin(), container.end(), [](<span class="keyword">int</span> val)&#123; <span class="keyword">return</span> <span class="number">0</span> &lt; val &amp;&amp; val &lt; <span class="number">10</span>;&#125;);</div><div class="line"><span class="comment">//[](int val)&#123; return 0 &lt; val &amp;&amp; val &lt; 10; 이 람다 표현식이다</span></div></pre></td></tr></table></figure>
+<li>std::launch::async 시동 방침을 지정하면 f는 반드시 비동기적으로 다시 말해서 다른 스레드에서 실행</li>
+<li>std::launch::deferred 시동 방침을 지정하면 f는 std::async가 돌려준 미래 객체(std::future)에 대해 get 이나 wait가 호출될 때에만 실행될 수 있다. 다시 말해서, f는 그러한 호출이 일어날 때까지 지연된다(deferred). get이나 wait가 호출되면 f는 동기적으로 실행된다. 즉 f를 호출한 호출자는 f의 실행이 종료될 때까지 block된다. 그리고 다시 말하지만 get이나 wait가 호출되지 않으면 f는 결코 실행되지 않는다.<br>그런데 std::async의 기본 시동 방침은 저 둘을 OR로 결합한 것이다<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> fut1 = <span class="built_in">std</span>::async(f); <span class="comment">//함수 f를 기본 시동 방침으로 실행한다.</span></div><div class="line"><span class="keyword">auto</span> fut2= <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async | <span class="built_in">std</span>::launch::deferred, f); <span class="comment">//함수 f를 비동기로 또는 지연해서 실행한다.</span></div></pre></td></tr></table></figure>
 </li>
-<li><p>클로저는 람다에 의해 만들어진 실행시점 객체이다. capture 모드에 따라 클로저가 capture 된 복사본을 가질 수 있고, 참조를 가질수도 있다. 위에서 std::if 호출에서 클로저는 실행시점에서 std::find_if의 셋째 인수로 전달되는 객체이다.</p>
-</li>
-<li>클로저 클래스는 클로저를 만드는 데 쓰인 클래스를 말한다. </li>
 </ul>
-<p>람다는 함수의 인수로만 쓰이는 클로저를 생성하는 데 자주 쓰인다. 일반적으로 클로저를 복사하는 것도 가능하다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> x; <span class="comment">//지역변수</span></div><div class="line">...</div><div class="line"></div><div class="line"><span class="keyword">auto</span> c1 = </div><div class="line">[x](<span class="keyword">int</span> y) &#123;<span class="keyword">return</span> x * y &gt; <span class="number">55</span>;&#125;; <span class="comment">//c1은 람다에 의해 만들어진 클로저의 복사본</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> c2 = c1; <span class="comment">//c2는 c1의 복사본</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> c3 = c2; <span class="comment">// c3는 c2의 복사본</span></div></pre></td></tr></table></figure></p>
-<p>이 코드에서 c1, c2, c3는 모두 람다가 산출한 클로저의 복사본이다.<br>컴파일 시점에서 존재하는 것은 람다와 클로저 클래스<br>실행 시점에서 존재하는 것은 클로저 이다.</p>
+<p>즉 기본적으로 std::async를 호출하면 f는 비동기적으로 실행될 수도 있고 동기적으로 실행될 수도 있다. std::async를 비롯한 표준 라이브러리의 스레드 관리 구성요소드르이 스레드의 생성과 파괴, 과다구독 회피, 부하 균형화의 책임을 떠맡을 수 있는 것은 이러한 유연성 덕분이다.(때에따라서 비동기로 바로 실행하기도 하고, 지연시켜서 실행하기도하고…)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//다음 문장은 스레드 t에서 실행된다고 가정</span></div><div class="line"><span class="keyword">auto</span> fut = <span class="built_in">std</span>::async(f); <span class="comment">// 기본 시동 방침으로 f를 실행한다.</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li>f가 지연 실행될 수도 있으므로, f가 t와 동시에 실행될지 예측하는 것이 불가능하다</li>
+<li>f가 fut에 대해 get이나 wait를 호출하는 스레드와는 다른 스레드에서 실행될 지 예측하는 것이 불가능하다. t에서 fut에 대한 get이나 wait를 호출해도 f가 t와는 다른 스레드에서 실행될지는 예측할 수 없다.</li>
+<li>모든 프로그램의 경로에서 fut에 대한 get이나 wait 호출이 일어난다는 보장이 없으므로 f가 반드시 실행될 것인지 예측하는 것이 불가능할 수 있다.<h3 id="TLS와의-호흡이-잘-맞지-않을-수-있다"><a href="#TLS와의-호흡이-잘-맞지-않을-수-있다" class="headerlink" title="TLS와의 호흡이 잘 맞지 않을 수 있다."></a>TLS와의 호흡이 잘 맞지 않을 수 있다.</h3>만약 f에 스레드 지역 저장소(thread-local storage : TLS)를 읽거나 쓰는 코드가 있다고 할 때, 그 코드가 어떤 스레드의 지역 변수에 접근할지 예측할 수 없기 때문에, TLS와는 기본시동 방침의 스케쥴링 유연성이 잘 맞지 않을 수 있다.<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> fut = <span class="built_in">std</span>::async(f); <span class="comment">// f의 TLS가 독립적인 스레드의 것일 수도 있고, fut에 대해 get이나 wait를 호출하는 스레드의 것일 수도 있다.</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>또한 만료 시간이 있는 wait 기반 루프에도 영향을 미친다. wait_for 나 wait_until을 호출하면 std::future_status::deferred라는 값이 반환되기 때문이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::literals; <span class="comment">//c++14의 시간 접미사들</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> <span class="comment">//1초간 수면후 반환</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="number">1</span>s);</div><div class="line">&#125;</div><div class="line"><span class="keyword">auto</span> fut = <span class="built_in">std</span>::async(f); <span class="comment">//f를 비동기적(기본 동작 방침)으로 실행</span></div><div class="line"><span class="comment">//f의 실행이 끝날 때까지 루프를 반복한다. 그런데 실행이 끝나지 않을 수도 있다.</span></div><div class="line"><span class="keyword">while</span>(fut.wait_for(<span class="number">100</span>ms) != <span class="built_in">std</span>::future_status::ready)</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>f가 지연이 된다면 fut.wait_for는 항상 std::future_status::deferred를 돌려주므로 std::future_status::ready와 절대 같지 않게되어 루프는 종료되지 않는다. 즉 지연이 될 경우가 문제가 되는 것인데 이는 아주 많은 부하가 걸리지 않는 상황에서는 발견될 가능성이 적은 버그이다. 이문제의 해결책은 std::async호출이 돌려준 미래 객체를 이용해서 해당 과제가 지연되었는지 점검하고, 지연되었다면 시간 만료기반 루프에 진입하지 않게 하는 것이다.<br>그런데 안타깝게도 과제의 지연 여부를 미래 객체로부터 직접 알아내는 방법은 없다. 이때 대신 wait_for 같은 시간 만료 기반 함수를 호출한다. 그리고 실제로 무언가를 기다리는 것이 아니고 반환값이 std::future_status::deferred인지만 보면되므로 만료 시간을 0으로 해서 wait_for를 호출하는 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> fut = <span class="built_in">std</span>::async(f);</div><div class="line"><span class="keyword">if</span>(fut.wait_for(<span class="number">0</span>s) == <span class="built_in">std</span>::future_status::deferred) <span class="comment">//만일 과제가 지연되었으면</span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//... fut에 wait나 get을 적용해서 f를 동기적으로 호출한다.</span></div><div class="line">&#125; <span class="keyword">else</span> &#123; <span class="comment">//과제가 지연되지 않았다면</span></div><div class="line">    <span class="keyword">while</span>(fut.wait_for(<span class="number">100</span>ms) != <span class="built_in">std</span>::future_status::ready) &#123; <span class="comment">//무한 루프는 불가능하므로(f가 완료되었다고 가정)</span></div><div class="line">    &#123;</div><div class="line">         ... <span class="comment">//과제가 지연되지도 않았고 준비되지도 않았으므로 준비될 때까지 동시적 작업을 수행한다.</span></div><div class="line">    &#125;</div><div class="line">    ... <span class="comment">//fut이 준비되었다</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>따라서 이러한 여러 사항들을 고려할떄 기본 시동 방침과 함꼐 std::async를 사용하는 것은 다음 조건들이 모두 성립할 때에만 적합하다는 것이다</p>
+<ul>
+<li>과제가 get이나 wait를 호출하는 스레드와 반드시 동시적으로 실행되어야 하는 것은 아니다</li>
+<li>여러 스레드 중 어떤 스레드의 thread_local 변수들을 읽고 쓰는지가 중요하지 않다.</li>
+<li>std::async가 돌려준 미래 객체에 대해 get이나 wait가 반드시 호출된다는 보장이 있거나, 과제가 전혀 실행되지 않아도 괜찮다.</li>
+<li>과제가 지연사태일 수도 있다는 점이 wait_for 이나 wait_until을 사용하는 코드에 반영되어 있다.<br>이 조건 중 하나라도 성립하지 않는다면 std::async가 주어진 과제를 진정으로 비동기적으로 실행하도록 강제할 필요가 있다. 그렇게 하는 방법은 std::launch::async를 첫 인수로 지정해서 std::async를 호출하면 된다.<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> fut = <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async, f); <span class="comment">//f를 비동기적으로 시동한다</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>하지만 위처럼 항상 std::launch::async 인수를 지정하기 귀찮으면 template를 써서 활용할 수 있다<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//c++11 버전</span></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div><div class="line"><span class="keyword">inline</span></div><div class="line"><span class="built_in">std</span>::future&lt;<span class="keyword">typename</span> <span class="built_in">std</span>::resultof&lt;F(Ts...)&gt;::type&gt;</div><div class="line">reallyAsync(F&amp;&amp; f, T&amp;&amp;... pparams) <span class="comment">// 비동기적 f(params...) 호출을 위한 미래 객체를 돌려준다.</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async, <span class="built_in">std</span>::forward&lt;F&gt;(f), <span class="built_in">std</span>::forward&lt;Ts&gt;(params)...);</div><div class="line">&#125;</div><div class="line"><span class="comment">//c++14 버전</span></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div><div class="line"><span class="keyword">inline</span></div><div class="line"><span class="keyword">auto</span></div><div class="line">reallyAsync(F&amp;&amp; f, T&amp;&amp;... pparams) <span class="comment">// 비동기적 f(params...) 호출을 위한 미래 객체를 돌려준다.</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async, <span class="built_in">std</span>::forward&lt;F&gt;(f), <span class="built_in">std</span>::forward&lt;Ts&gt;(params)...);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>호출가능한 객체 f와 0개 이상의 매개변수들로 이루어진 매개변수 묶음 params를 받아서 그것들을 std::async에 완벽하게 전달한다.<br>그리고 std::futre 객체를 돌려준다.</p>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><ul>
+<li>std::async의 기본 시동 방침은 과제의 비동기적 실행과 동기적 실행을 모두 허용한다.</li>
+<li>그러나 이 유연성 때문에 thread_local 접근의 불확실성이 발생하고, 과제가 절대로 실행되지 않을 수도 있고, 시간 만료 기반 wait 호출에 대한 프로그램 논리에도 영향이 미친다.</li>
+<li>과제를 반드시 비동기적으로 실행해야 한다면 std::launch::async를 지정하라</li>
+</ul>
 
         </div>
         <footer class="article-footer">
@@ -187,7 +206,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/10/23/EMC-31/" data-id="cj9rddwe1000bswvitglr4x91" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/11/09/EMC-36/" data-id="cj9rddwec000oswvi1uz5jb57" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -324,20 +343,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/10/23/EMC-31-1/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">més nou</strong>
-        <p class="article-nav-title">
-        
-            EMC_31. 기본 갈무리 모드를 피하라
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2017/10/20/EMC-30/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/11/09/sophie-1/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">antic</strong>
-        <p class="article-nav-title">EMC_30. 완벽 전달이 실패하는 경우들을 잘 알아두라.</p>
+        <p class="article-nav-title">sophie_1</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -489,7 +498,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'https://LeeInJae.github.io/2017/10/23/EMC-31/';
+    var disqus_url = 'https://LeeInJae.github.io/2017/11/09/EMC-36/';
     
     (function() {
     var dsq = document.createElement('script');
