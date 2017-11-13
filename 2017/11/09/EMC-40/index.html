@@ -16,7 +16,7 @@
 <meta property="og:url" content="https://LeeInJae.github.io/2017/11/09/EMC-40/index.html">
 <meta property="og:site_name" content="프로그래밍 안녕">
 <meta property="og:description" content="EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic, std::atomic, std::atomic 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공">
-<meta property="og:updated_time" content="2017-11-08T18:16:24.504Z">
+<meta property="og:updated_time" content="2017-11-13T18:41:07.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EMC_40">
 <meta name="twitter:description" content="EMC_40. 동시성에는 std::atomic을 사용하고, volatile은 특별한 메모리에 사용하라프로그래머들이 종종 volatile과 std::atomic을 혼동한다. std::atomic은 템플릿으로서 이템플릿의 인스턴스(std::atomic, std::atomic, std::atomic 등)는 다른 스레드들이 반드시 원자적으로 인식하는 연산들을 제공">
@@ -173,7 +173,7 @@
 <h3 id="std-atomic"><a href="#std-atomic" class="headerlink" title="std::atomic"></a>std::atomic</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; ai(<span class="number">0</span>); <span class="comment">//0으로 초기화</span></div><div class="line">ai = <span class="number">10</span>; <span class="comment">//원자적으로 ai를 10으로 설정</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; ai; <span class="comment">// 원자적으로 ai의 값을 얻음</span></div><div class="line">++ai; <span class="comment">//원자적으로 ai를 증가(11이 된다)</span></div><div class="line">--ai; <span class="comment">//원자적으로 ai를 감소한다(10이 된다)</span></div></pre></td></tr></table></figure>
 <p>이 문장들이 실행되는 동안 ai를 읽는 다른 스레드들이 보게 되는 값은 0이나 10, 11뿐이다. 읽기-수정-쓰기(Read-Modify-Write: RMW) 연산은 각각 원자적으로 수행된다. std::atomic은 이처럼 객체가 생성되고 나면, 그 객체에 대한 모든 멤버 함수는 다른 스레드들에게 반드시 원자적으로 보인다.</p>
 <h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>volatile은 다중 스레드 문맥에서 거의 아무것도 보장하지 않는다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">int</span> <span class="title">vi</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//vi 를 0으로 초기화</span></div><div class="line">vi = <span class="number">10</span>; <span class="comment">//vi를 10으로 설정</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; vi ; <span class="comment">//vi의 값을 읽음</span></div><div class="line">++vi; <span class="comment">// vi를 증가(11이 된다)</span></div><div class="line">--vi; <span class="comment">// vi를 감소한다(10이 된다)</span></div></pre></td></tr></table></figure></p>
-<p>이 코드를 실행하는 동안 vi의 값을 다른 스레드들이 읽는다면 그 스레드들은 그 어떤 값이라도 볼 수 있다. 그리고 이러한 코드는 미정의 행동을 유발한다. 이유는 간단하다 vi를 수정하기 있는데 만일 그와 동시에 vi를 읽는 다른 스레드가 있따면 std::atomic도 아니고 뮤텍스로 보호받지도 못하므로 메모리에 기록과 읽기가 동시에 접근하는 상황이 되기 떄문이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; ac(<span class="number">0</span>); <span class="comment">//원자적 카운터</span></div><div class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">int</span> <span class="title">vc</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//휘발성 카운터</span></div><div class="line"></div><div class="line"><span class="comment">// 스레드 1 에서 ++ac; ++vc;</span></div><div class="line"><span class="comment">// 스레드 2 에서 ++ac; ++vc;</span></div></pre></td></tr></table></figure></p>
+<p>이 코드를 실행하는 동안 vi의 값을 다른 스레드들이 읽는다면 그 스레드들은 그 어떤 값이라도 볼 수 있다. 그리고 이러한 코드는 미정의 행동을 유발한다. 이유는 간단하다 vi를 수정하기 있는데 만일 그와 동시에 vi를 읽는 다른 스레드가 있따면 std::atomic도 아니고 뮤텍스로 보호받지도 못하므로 메모리에 기록과 읽기가 동시에 접근하는 상황이 되기 때문이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; ac(<span class="number">0</span>); <span class="comment">//원자적 카운터</span></div><div class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">int</span> <span class="title">vc</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//휘발성 카운터</span></div><div class="line"></div><div class="line"><span class="comment">// 스레드 1 에서 ++ac; ++vc;</span></div><div class="line"><span class="comment">// 스레드 2 에서 ++ac; ++vc;</span></div></pre></td></tr></table></figure></p>
 <p>두 스레드 모두 실행이 끝난 후에 ac의 값과 vc의 값은 어떻게 될까?</p>
 <ul>
 <li>ac는 반드시 2이다. 각 증가 연산이 원자적으로 수행되었기 때문이다.</li>
@@ -212,7 +212,7 @@
 
 
 
-    <a data-url="https://LeeInJae.github.io/2017/11/09/EMC-40/" data-id="cj9rddwef000rswvimfvrwc3e" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://LeeInJae.github.io/2017/11/09/EMC-40/" data-id="cj9yjbuut000mf0vinfpvo7fm" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -382,6 +382,15 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/14/EMC-41/" class="title">EMC_41</a></p>
+                            <p class="item-date"><time datetime="2017-11-13T18:39:14.000Z" itemprop="datePublished">2017-11-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
                             <p class="item-title"><a href="/2017/11/09/EMC-36/" class="title">EMC_36</a></p>
                             <p class="item-date"><time datetime="2017-11-08T18:19:25.000Z" itemprop="datePublished">2017-11-09</time></p>
                         </div>
@@ -414,15 +423,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
-                            <p class="item-title"><a href="/2017/11/03/EMC-34/" class="title">EMC_34</a></p>
-                            <p class="item-date"><time datetime="2017-11-02T17:20:41.000Z" itemprop="datePublished">2017-11-03</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -432,7 +432,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">14</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">15</span></li></ul>
         </div>
     </div>
 
@@ -442,7 +442,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">arxius</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li></ul>
         </div>
     </div>
 
@@ -452,7 +452,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">etiquetes</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/complaint/">complaint</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/small-talk/">small talk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-async/">std::async</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-atomic/">std::atomic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-launch-async/">std::launch::async</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-thread/">std::thread</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/universal-reference/">universal reference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/동시성/">동시성</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/보편참조/">보편참조</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/complaint/">complaint</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/small-talk/">small talk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-async/">std::async</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-atomic/">std::atomic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-launch-async/">std::launch::async</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-thread/">std::thread</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/universal-reference/">universal reference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/값전달/">값전달</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/값전달-방식/">값전달 방식</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/동시성/">동시성</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/보편참조/">보편참조</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/참조전달-방식/">참조전달 방식</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -462,7 +462,7 @@
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">etiqueta cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/EMC/" style="font-size: 20px;">EMC</a> <a href="/tags/c/" style="font-size: 20px;">c++</a> <a href="/tags/complaint/" style="font-size: 10px;">complaint</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/small-talk/" style="font-size: 10px;">small talk</a> <a href="/tags/std-async/" style="font-size: 10px;">std::async</a> <a href="/tags/std-atomic/" style="font-size: 10px;">std::atomic</a> <a href="/tags/std-forward/" style="font-size: 13.33px;">std::forward</a> <a href="/tags/std-launch-async/" style="font-size: 10px;">std::launch::async</a> <a href="/tags/std-move/" style="font-size: 16.67px;">std::move</a> <a href="/tags/std-thread/" style="font-size: 10px;">std::thread</a> <a href="/tags/universal-reference/" style="font-size: 10px;">universal reference</a> <a href="/tags/volatile/" style="font-size: 10px;">volatile</a> <a href="/tags/동시성/" style="font-size: 10px;">동시성</a> <a href="/tags/보편참조/" style="font-size: 10px;">보편참조</a>
+            <a href="/tags/EMC/" style="font-size: 20px;">EMC</a> <a href="/tags/c/" style="font-size: 20px;">c++</a> <a href="/tags/complaint/" style="font-size: 10px;">complaint</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/small-talk/" style="font-size: 10px;">small talk</a> <a href="/tags/std-async/" style="font-size: 10px;">std::async</a> <a href="/tags/std-atomic/" style="font-size: 10px;">std::atomic</a> <a href="/tags/std-forward/" style="font-size: 15px;">std::forward</a> <a href="/tags/std-launch-async/" style="font-size: 10px;">std::launch::async</a> <a href="/tags/std-move/" style="font-size: 15px;">std::move</a> <a href="/tags/std-thread/" style="font-size: 10px;">std::thread</a> <a href="/tags/universal-reference/" style="font-size: 10px;">universal reference</a> <a href="/tags/volatile/" style="font-size: 10px;">volatile</a> <a href="/tags/값전달/" style="font-size: 10px;">값전달</a> <a href="/tags/값전달-방식/" style="font-size: 10px;">값전달 방식</a> <a href="/tags/동시성/" style="font-size: 10px;">동시성</a> <a href="/tags/보편참조/" style="font-size: 10px;">보편참조</a> <a href="/tags/참조전달-방식/" style="font-size: 10px;">참조전달 방식</a>
         </div>
     </div>
 

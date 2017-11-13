@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>EMC_41 | 프로그래밍 안녕</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="c++,EMC,std::forward,값전달,값전달 방식,참조전달 방식" />
+    
+    <meta name="description" content="다듬기값 전달과 생성 삽입은 효과적인 C++ 프로그래밍에서 중요한 역할을 한다. 123456789101112class Widget &amp;#123;public:     void addName(const std::string&amp;amp; newName) //왼값을 받아서 복사한다.     &amp;#123; names.push_back(newName); &amp;#125;">
+<meta name="keywords" content="c++,EMC,std::forward,값전달,값전달 방식,참조전달 방식">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EMC_41">
+<meta property="og:url" content="https://LeeInJae.github.io/2017/11/14/EMC-41/index.html">
+<meta property="og:site_name" content="프로그래밍 안녕">
+<meta property="og:description" content="다듬기값 전달과 생성 삽입은 효과적인 C++ 프로그래밍에서 중요한 역할을 한다. 123456789101112class Widget &amp;#123;public:     void addName(const std::string&amp;amp; newName) //왼값을 받아서 복사한다.     &amp;#123; names.push_back(newName); &amp;#125;">
+<meta property="og:updated_time" content="2017-11-13T18:41:07.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EMC_41">
+<meta name="twitter:description" content="다듬기값 전달과 생성 삽입은 효과적인 C++ 프로그래밍에서 중요한 역할을 한다. 123456789101112class Widget &amp;#123;public:     void addName(const std::string&amp;amp; newName) //왼값을 받아서 복사한다.     &amp;#123; names.push_back(newName); &amp;#125;">
+    
+
+    
+        <link rel="alternate" href="/" title="프로그래밍 안녕" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">열심히하자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/English/">English</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/source/index.html">about</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Cercar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'categories',
+            TAGS: 'etiquetes',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Programming/">Programming</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-EMC-41" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        EMC_41
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2017/11/14/EMC-41/" class="article-date">
+            <time datetime="2017-11-13T18:39:14.000Z" itemprop="datePublished">2017-11-14</time>
+        </a>
+    </div>
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/EMC/">EMC</a>, <a class="tag-link" href="/tags/c/">c++</a>, <a class="tag-link" href="/tags/std-forward/">std::forward</a>, <a class="tag-link" href="/tags/값전달/">값전달</a>, <a class="tag-link" href="/tags/값전달-방식/">값전달 방식</a>, <a class="tag-link" href="/tags/참조전달-방식/">참조전달 방식</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <hr>
+<h3 id="다듬기"><a href="#다듬기" class="headerlink" title="다듬기"></a>다듬기</h3><p>값 전달과 생성 삽입은 효과적인 C++ 프로그래밍에서 중요한 역할을 한다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; newName)</span> <span class="comment">//왼값을 받아서 복사한다.</span></span></div><div class="line"><span class="function">     </span>&#123; names.push_back(newName); &#125;</div><div class="line">     </div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>&amp;&amp; newName)</span></span></div><div class="line"><span class="function">     </span>&#123; names.push_ack(<span class="built_in">std</span>::move(newName)); &#125; <span class="comment">//오른값을 받아서 이동한다</span></div><div class="line"></div><div class="line">     ...</div><div class="line">     <span class="keyword">private</span>:</div><div class="line">     <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; name;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>위에 코드는 기능상으로는 문제가 없지만 본질적으로 같은 일을 하는 함수를 두 개 작성해야 한다. 즉 유지 보수에 매우 거슬리는 문제가 있다. 이뿐만 아니라 목적 코드에도 함수가 두 개 존재한다. 실행 플그램의 크기가 증가하게 되는 것이다. (인라인화 되지 않으면) 한가지 대한은 addName을 보편 참조를 받는 함수 템플릿으로 만드는 것이다.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(T&amp;&amp; newName)</span> <span class="comment">//왼값과 오른값을 모두 받는다.(오른값은 이동)</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          names.push_back(<span class="built_in">std</span>::forward&lt;T&gt;(newName));</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>보편 참조를 사용하면 코드량은 줄어들지만, 곤란 한문제들이 발생할 수 있다. addName은 템플릿이므로 그 구현은 반드시 헤더 파일에 두어야 한다. 위 함수는 왼값과 오른값에 대해 다르게 인스턴스화 되며 std::string과 std::string으로 변환 가능한 형식들에 대해서도 다르게 인스턴스화되기 때문이다. 게다가 보편참조로는 전달할 수 없는 인ㅅ우 형식들이 존재한다는 점도 문제이다.(항목30 참고). 그리고 부적절한 형식을 전달하면 난해한 오류 메시지를 주기도 한다.(항목27)<br>그렇다면 가장 이상적인 상황은 무엇일까?</p>
+<ul>
+<li>왼값은 복사하고, 오른값은 이동하고, 함수 하나만 다를 수 있고, 보편 참조의 문제를 피할 수 있는 것이다.<br>이러한 방법이 있긴한데, 가장 먼저 배웠을 규칙 중 하나를 포기해야한다 그 규칙은</li>
+<li>사용자 정의 형식의 객체는 값으로 전달하지 말라는 것이다<br>그렇다면 addName같은경우는 왜 이 규칙을 포기하는 것이 더 합당한지 살펴보자</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> newName)</span> <span class="comment">//왼값이나 오른값을 받아서 이동</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          names.push_back(<span class="built_in">std</span>::move(newName));</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<ul>
+<li>newName은 값으로 받고 있다.</li>
+<li>호출자가 넘겨준 값이랑 newName은 전혀 별개의 객체이다.</li>
+<li>함수의 마지막에 std::move를 하고 있다.</li>
+</ul>
+<p>위의 3가지 때문에 std::move는 완벽하게 합당하다. 그런데 값전달은 성능에 안좋은 영향을 미칠 것 같은 느낌이다. 실제로 C++98에서는 이 비용이 컸다. 왜냐하면 호출자가 무엇을 넘겨주든 newName이 복사생성에 의해 생성되었다. 그러나 C++11 에서는 newName은 인수가 왼값일 때에만 복사생성되고 오른값일 때에는 이동생성에 의해 생성된다. 즉 C++11이라면 성능에도 아무런 문제가 없다. 그러나 주의사항은 존재한다. 다음을 살펴보자.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//중복적재 버전</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; newName)</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          names.push_back(newName);</div><div class="line">     &#125;</div><div class="line">     </div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>&amp;&amp; newName)</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          names.push_back(<span class="built_in">std</span>::move(newName));</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//보편참조 방식</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(T&amp;&amp; newName)</span> <span class="comment">//왼값과 오른값을 모두 받는다.(오른값은 이동)</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          names.push_back(<span class="built_in">std</span>::forward&lt;T&gt;(newName));</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//값전달 방식</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">addName</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> newName)</span> <span class="comment">//왼값이나 오른값을 받아서 이동</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          names.push_back(<span class="built_in">std</span>::move(newName));</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>위의 2개의 접근 방식은 참조로 매개변수를 전달하므로 ‘참조 전달 접근방식’이라고 하겠다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Widget w;</div><div class="line">...</div><div class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">name</span><span class="params">(<span class="string">"Bart"</span>)</span></span>;</div><div class="line"></div><div class="line">w.addName(name); <span class="comment">//왼값을 전달</span></div><div class="line">...</div><div class="line">w.addName(name + <span class="string">"Jenne"</span>); <span class="comment">//오른값을 전달</span></div></pre></td></tr></table></figure>
+<h3 id="중복적재-구현의-경우"><a href="#중복적재-구현의-경우" class="headerlink" title="중복적재 구현의 경우"></a>중복적재 구현의 경우</h3><p>newName은 참조이기 때문에 복사나 이동 연산을 하는 비용은 없다. 그리고 왼값일 때는 복사 비용이 1회, 오른값 일때에는 이동1회의 비용으로 names에 push_back 된다.</p>
+<ul>
+<li>왼값 : 복사 1회</li>
+<li>오른값 : 이동 1회</li>
+</ul>
+<h3 id="보편-참조"><a href="#보편-참조" class="headerlink" title="보편 참조"></a>보편 참조</h3><p>중복적재와 마찬가지로 호출자의 인수는 참조 newName에 묶이므로 복사나 이동에 대한 비용은 없다. 역시 std::forward를 통해 완벽전달 하므로 왼값일때는 push_back 시 복사 1회, 오른값일때는 이동 1회의 비용이 든다.</p>
+<ul>
+<li>왼값 : 복사 1회</li>
+<li>오른값 : 이동 1회</li>
+</ul>
+<h3 id="값-전달"><a href="#값-전달" class="headerlink" title="값 전달"></a>값 전달</h3><p>호출자가 넘겨준 인수가 왼값이든 오른값이든 매개변수 newName이 반드시 생성된다. 인수가 왼값이면 비용은 복사 생성1회, 오른값이면 이동 생성 1회 이다. 함수내에서는 어떤 경우이든 newName이 항상 Widget::names로 이동된다. 따라서 총 비용은 왼값의 경우 복사 1회 + 이동1회 이고 오른값의 경우는 이동 2회이다.(참조전달 방식보다 왼값과 오른값 모두 이동이 하나 많다.)</p>
+<ul>
+<li>왼값 : 복사 1회  + 이동 1회</li>
+<li>오른값 : 이동 2회</li>
+</ul>
+<h3 id="의미-되새기기"><a href="#의미-되새기기" class="headerlink" title="의미 되새기기"></a>의미 되새기기</h3><ul>
+<li>값 전달은 ‘고려하라’ 이지 ‘사용하라’가 아니다. 함수를 하나만 작성하고, 목적 코드에 함수 하나만 만들어지고, 보편 참조에서의 문제점이 없다는 것이 장점이지만 위에서 보다시피 다른 대안들보다 비용이 크다.</li>
+<li>복사 가능 매개변수에 대해서만 값 전달을 고려해야한다. 복사할 수 없는 매개변수는 반드시 이동 전용 형식일텐데, 이때 매개변수에 왼값이 넘어오면 값 전달 방식은 복사 생성자를 호출하지만 이동 전용 형식은 복사 생성자가없으므로 이동생성자를 호출한다. 따라서  이 매개변수는 이동생성 된 것이다. 오른값이 넘어오면 C++11에서는 이동생성자를 호출한다. 즉, 중복적재가 필요없다(이동 전용 형식 객체 전달시). 그러나 참조 전달 방식때보다 역시 이동비용은 1회 많다.</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">setPtr</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;&amp;&amp; ptr)</span> <span class="comment">//참조로 받으면 이동이나 복사 비용 없음</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          p = <span class="built_in">std</span>::move(ptr);</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line"><span class="keyword">private</span>:</div><div class="line">     <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; p;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">setPtr</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; ptr)</span> <span class="comment">//값으로 받으면 이동 비용 1회 추가</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">          p = <span class="built_in">std</span>::move(ptr);</div><div class="line">     &#125;</div><div class="line">     ...</div><div class="line"><span class="keyword">private</span>:</div><div class="line">     <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; p;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<ul>
+<li>값 전달은 이동이 저렴한 매개변수에 대해서만 고려해야 한다. 이동이 더 일어난다고 해서 큰 문제가 되지 않을 것이기 때문이다. 반대로 말하면 이동 비용이 비싸면 이는 성능에 영향을 줄 수 있다.</li>
+<li>값 전달은 항상 복사되는 매개변수에 대해서만 고려해야 한다. </li>
+</ul>
+<h3 id="잘림-문제"><a href="#잘림-문제" class="headerlink" title="잘림 문제"></a>잘림 문제</h3><p>성능과 무관하게 신경쓸 문제로는 잘림문제가 있다. 참조 전달과는 달리 값 전달에서 발생할 여지가 있는 문제이다. 함수가 기반 클래스 형식이나 그로부터 파생된 임의의 형식의 매개변수를 받는 경우에는 그 매개변수를 값 전달 방식으로 선언하지 않는 것이 좋다. 왜냐하면 파생형식의 객체가 전달되었을 때 그 객체의 파생 클래스 부분이 잘려나가기 때문이다.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span>...&#125;; <span class="comment">//기반 클래스</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialWidget</span> :</span> <span class="keyword">public</span> Widget &#123;...&#125;; <span class="comment">//파생 클래스</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">processWidget</span><span class="params">(Widget w)</span></span>; <span class="comment">//Widget과 그로부터 파생된 임의의 형식을 받는 함수;잘림문제 발생</span></div><div class="line"></div><div class="line">SpecialWidget sw;</div><div class="line"></div><div class="line">prcessWidget(sw); <span class="comment">//processWidget은 이를 SpecialWidget이 아니라 Widget으로 인식</span></div></pre></td></tr></table></figure>
+<h3 id="C-의-조언"><a href="#C-의-조언" class="headerlink" title="C++ 의 조언"></a>C++ 의 조언</h3><p>웬만하면 일반적으로 값 전달은 여전히 성능하락을 유발할 수 있고, 잘림 문제로 이어질 수 있다. 또한 이동이 저렵하고 항상 복사되는 복사 가능한, 그리고 잘림 문제가 발생할 여지가 없는 매개변수의 경우에는 값 전달 접근방식이 참조 전달 접근방식들만큼이나 효율적이면서 단점이 없다.</p>
+<h4 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h4><ul>
+<li>이동이 저렴하고 항상 복사되는 복사 가능 매개변수에 대해서는 값 전달이 참조 전달만큼이나 효율적이고, 구현하기 쉽고, 산출되는 목적 코드의 크기가 작다</li>
+<li>왼값 인수의 경우 값(즉, 복사생성) 다음의 이동 배정은 참조 전달 다음의 복사배정보다 훨씬 비쌀 가능성이 있다.</li>
+<li>값 전달에는 잘림 문제가 발생할 수 있으므로 일반적으로 기반 클래스 매개 변수 형식에 대해서는 값 전달이 적절하지 않다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://LeeInJae.github.io/2017/11/14/EMC-41/" data-id="cj9yjbuuw000qf0vi0hubeasz" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>seguir:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/LeeInJae" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/11/09/EMC-36/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">antic</strong>
+        <p class="article-nav-title">EMC_36</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/14/EMC-41/" class="title">EMC_41</a></p>
+                            <p class="item-date"><time datetime="2017-11-13T18:39:14.000Z" itemprop="datePublished">2017-11-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/09/EMC-36/" class="title">EMC_36</a></p>
+                            <p class="item-date"><time datetime="2017-11-08T18:19:25.000Z" itemprop="datePublished">2017-11-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/English/">English</a></p>
+                            <p class="item-title"><a href="/2017/11/09/sophie-1/" class="title">sophie_1</a></p>
+                            <p class="item-date"><time datetime="2017-11-08T18:16:53.000Z" itemprop="datePublished">2017-11-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/09/EMC-40/" class="title">EMC_40</a></p>
+                            <p class="item-date"><time datetime="2017-11-08T18:15:35.000Z" itemprop="datePublished">2017-11-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Programming/">Programming</a></p>
+                            <p class="item-title"><a href="/2017/11/07/EMC-35/" class="title">EMC_35.</a></p>
+                            <p class="item-date"><time datetime="2017-11-06T15:36:10.000Z" itemprop="datePublished">2017-11-07</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">15</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">arxius</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">etiquetes</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EMC/">EMC</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c++</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/complaint/">complaint</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/small-talk/">small talk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-async/">std::async</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-atomic/">std::atomic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-forward/">std::forward</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-launch-async/">std::launch::async</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-move/">std::move</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/std-thread/">std::thread</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/universal-reference/">universal reference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/값전달/">값전달</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/값전달-방식/">값전달 방식</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/동시성/">동시성</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/보편참조/">보편참조</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/참조전달-방식/">참조전달 방식</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">etiqueta cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/EMC/" style="font-size: 20px;">EMC</a> <a href="/tags/c/" style="font-size: 20px;">c++</a> <a href="/tags/complaint/" style="font-size: 10px;">complaint</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/small-talk/" style="font-size: 10px;">small talk</a> <a href="/tags/std-async/" style="font-size: 10px;">std::async</a> <a href="/tags/std-atomic/" style="font-size: 10px;">std::atomic</a> <a href="/tags/std-forward/" style="font-size: 15px;">std::forward</a> <a href="/tags/std-launch-async/" style="font-size: 10px;">std::launch::async</a> <a href="/tags/std-move/" style="font-size: 15px;">std::move</a> <a href="/tags/std-thread/" style="font-size: 10px;">std::thread</a> <a href="/tags/universal-reference/" style="font-size: 10px;">universal reference</a> <a href="/tags/volatile/" style="font-size: 10px;">volatile</a> <a href="/tags/값전달/" style="font-size: 10px;">값전달</a> <a href="/tags/값전달-방식/" style="font-size: 10px;">값전달 방식</a> <a href="/tags/동시성/" style="font-size: 10px;">동시성</a> <a href="/tags/보편참조/" style="font-size: 10px;">보편참조</a> <a href="/tags/참조전달-방식/" style="font-size: 10px;">참조전달 방식</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/LeeInJae">Git</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 cowspirit</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://LeeInJae.github.io/2017/11/14/EMC-41/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
